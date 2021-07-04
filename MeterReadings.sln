@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D41D1DD-334F-41C2-A1F0-B121AD2ABB08}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsApi", "MeterReadings\MeterReadingsApi.csproj", "{D6C11853-4C7E-47F5-A499-860B6F1FEE67}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsData", "MeterReadingsData\MeterReadingsData.csproj", "{7CC762EF-DFA5-495A-8FFD-E1026E924D63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6C11853-4C7E-47F5-A499-860B6F1FEE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6C11853-4C7E-47F5-A499-860B6F1FEE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6C11853-4C7E-47F5-A499-860B6F1FEE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6C11853-4C7E-47F5-A499-860B6F1FEE67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CC762EF-DFA5-495A-8FFD-E1026E924D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CC762EF-DFA5-495A-8FFD-E1026E924D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CC762EF-DFA5-495A-8FFD-E1026E924D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CC762EF-DFA5-495A-8FFD-E1026E924D63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA5C02A4-D7E9-4943-9C7C-09CE0D0D143C}
+	EndGlobalSection
+EndGlobal
