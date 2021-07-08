@@ -1,4 +1,4 @@
-﻿namespace MeterReadingsApi.DTO
+﻿namespace MeterReadings.DTO
 {
 	using System;
 

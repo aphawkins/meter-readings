@@ -1,8 +1,9 @@
 ﻿namespace MeterReadings.Controllers
 {
-	using MeterReadingsApi.DTO;
+	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
+	using MeterReadingsService;
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
@@ -25,14 +26,9 @@
 		[HttpGet]
 		public IActionResult GetMeterReadings()
 		{
-			var list = _context.MeterReadings.Select(m => new MeterReadingDto
-			{
-				AccountId = m.AccountId,
-				MeterReadingDateTime = m.MeterReadingDateTime,
-				MeterReadValue = m.MeterReadingValue,
-			});
+			IQueryable<MeterReadingDto> readings = MeterReadingService.MapMeterReadingToDto(_context.MeterReadings);
 
-			return Ok(list);
+			return Ok(readings);
 		}
 
 		[HttpDelete]

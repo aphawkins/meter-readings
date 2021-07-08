@@ -1,7 +1,8 @@
 ﻿namespace MeterReadingsApi.Controllers
 {
-	using MeterReadingsApi.DTO;
+	using MeterReadings.DTO;
 	using MeterReadingsData;
+	using MeterReadingsService;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Linq;
 
@@ -20,31 +21,21 @@
 		[HttpGet]
 		public ActionResult GetAccounts()
 		{
-			return Ok(_context.Accounts.Select(x => new AccountDto
-			{
-				AccountId = x.Id,
-				FirstName = x.FirstName,
-				LastName = x.LastName,
-			}));
+			IQueryable<AccountDto> accounts = AccountService.MapAccountToDto(_context.Accounts);
+			return Ok(accounts);
 		}
 
 		// GET: api/Accounts/5
 		[HttpGet("{id}")]
 		public ActionResult GetAccountsItem(int id)
 		{
-			var todoItem = _context.Accounts.Where(x => id == x.Id).Select(x => new AccountDto
-			{
-				AccountId = x.Id,
-				FirstName = x.FirstName,
-				LastName = x.LastName,
-			});
-
-			if (todoItem == null)
+			IQueryable<AccountDto> accounts = AccountService.MapAccountToDto(_context.Accounts.Where(x => id == x.Id));
+			if (accounts == null)
 			{
 				return NotFound();
 			}
 
-			return Ok(todoItem);
+			return Ok(accounts);
 		}
 	}
 }
