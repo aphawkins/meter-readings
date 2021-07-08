@@ -3,24 +3,13 @@
 	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
+	using System;
 	using System.Linq;
+	using System.Threading.Tasks;
 
 	public class AccountService : IAccountService
     {
 		private readonly MainDbContext _context;
-
-		private IQueryable<AccountDto> MapAccountToDto(IQueryable<Account> accounts)
-		{
-			return accounts.Select(acc => new AccountDto
-			{
-
-				AccountId = acc.Id,
-				FirstName = acc.FirstName,
-				LastName = acc.LastName,
-			});
-		}
-
-
 
 		public AccountService(MainDbContext context)
 		{
@@ -32,18 +21,39 @@
 			return MapAccountToDto(_context.Accounts);
 		}
 
-		public IQueryable<AccountDto> GetAccountById(int accountId)
+		public async Task<AccountDto> GetAccountAsync(int accountId)
 		{
-			return MapAccountToDto(_context.Accounts.Where(acc => accountId == acc.Id));
+			var account = await _context.Accounts.FindAsync(accountId);
+			if (account == null)
+			{
+				return null;
+			}	
+
+			return MapAccountToDto(account);
 		}
 
-		public Account UpdateBook(AccountDto dto)
+		public Account UpdateAccount(AccountDto dto)
 		{
 			Account account = _context.Accounts.Find(dto.AccountId);
 			account.FirstName = dto.FirstName;
 			account.LastName = dto.LastName;
 			_context.SaveChanges();
 			return account;
+		}
+
+		private static AccountDto MapAccountToDto(Account account)
+		{
+			return new AccountDto
+			{
+				AccountId = account.Id,
+				FirstName = account.FirstName,
+				LastName = account.LastName,
+			};
+		}
+
+		private static IQueryable<AccountDto> MapAccountToDto(IQueryable<Account> accounts)
+		{
+			return accounts.Select(account => MapAccountToDto(account));
 		}
 	}
 }

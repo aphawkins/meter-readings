@@ -5,6 +5,7 @@
 	using MeterReadingsService;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Linq;
+	using System.Threading.Tasks;
 
 	[Route("api/[controller]")]
 	[ApiController]
@@ -19,7 +20,7 @@
 
 		// GET: api/Accounts
 		[HttpGet]
-		public ActionResult GetAccounts()
+		public IActionResult GetAccounts()
 		{
 			IAccountService service = new AccountService(_context);
 			IQueryable<AccountDto> accounts = service.GetAllAccounts();
@@ -28,16 +29,16 @@
 
 		// GET: api/Accounts/5
 		[HttpGet("{id}")]
-		public ActionResult GetAccountsItem(int id)
+		public async Task<IActionResult> GetAccountsItem(int id)
 		{
 			IAccountService service = new AccountService(_context);
-			IQueryable<AccountDto> accounts = service.GetAccountById(id);
-			if (accounts == null)
+			AccountDto account = await service.GetAccountAsync(id);
+			if (account == null)
 			{
 				return NotFound();
 			}
 
-			return Ok(accounts);
+			return Ok(account);
 		}
 	}
 }
