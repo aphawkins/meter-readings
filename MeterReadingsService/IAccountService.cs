@@ -1,7 +1,6 @@
 ﻿namespace MeterReadingsService
 {
 	using MeterReadings.DTO;
-	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
 

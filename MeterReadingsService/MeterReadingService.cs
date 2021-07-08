@@ -44,6 +44,12 @@
 					MeterReadingValue = meterReadingValue,
 				});
 
+			int count = await _context.SaveChangesAsync();
+			if (count < 1)
+			{
+				return null;
+			}
+
 			return MapMeterReadingToDto(reading.Entity);
 		}
 

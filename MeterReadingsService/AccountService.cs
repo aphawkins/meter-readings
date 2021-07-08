@@ -3,7 +3,6 @@
 	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
-	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
 

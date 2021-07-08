@@ -1,7 +1,6 @@
 ﻿namespace MeterReadings.Controllers
 {
 	using MeterReadings.DTO;
-	using MeterReadingsData;
 	using MeterReadingsService;
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
@@ -14,37 +13,26 @@
 	[Route("meter-reading-uploads")]
 	public class MeterReadingsController : ControllerBase
 	{
-		private readonly MainDbContext _context;
-
-		public MeterReadingsController(MainDbContext context)
-		{
-			_context = context;
-		}
-
 		[HttpGet]
-		public IActionResult GetMeterReadings()
+		public IActionResult GetMeterReadings([FromServices] IMeterReadingService service)
 		{
-			IMeterReadingService service = new MeterReadingService(_context);
 			IQueryable<MeterReadingDto> readings = service.GetAllMeterReadings();
 
 			return Ok(readings);
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> DeleteMeterReadings()
+		public async Task<IActionResult> DeleteMeterReadings([FromServices] IMeterReadingService service)
 		{
-			IMeterReadingService service = new MeterReadingService(_context);
 			int count = await service.DeleteAllMeterReadingsAsync();
 
 			return Ok(new { deleted = count });
 		}
 
 		[HttpPost(Name = "PostMeterReadingsCsvFile")]
-		public async Task<IActionResult> OnPostUploadAsync(IFormFile file)
+		public async Task<IActionResult> OnPostUploadAsync([FromServices] IAccountService accountService, [FromServices] IMeterReadingService readingService, IFormFile file)
 		{
-			IAccountService accountsService = new AccountService(_context);
-			IMeterReadingService readingsService = new MeterReadingService(_context);
-
+			int successful = 0;
 			int total = 0;
 			string line;
 			using StreamReader readingsReader = new(file.OpenReadStream());
@@ -64,15 +52,19 @@
 					readingValue < 100000)
 				{
 					// Does account exist?
-					AccountDto account = await accountsService.GetAccountAsync(accountId);
+					AccountDto account = await accountService.GetAccountAsync(accountId);
 
 					// Does reading already exist?
-					MeterReadingDto reading = await readingsService.GetMeterReadingAsync(accountId, readingDT);
+					MeterReadingDto reading = await readingService.GetMeterReadingAsync(accountId, readingDT);
 
 					if (account != null &&
 						reading == null)
 					{
-						await readingsService.AddMeterReadingAsync(accountId, readingDT, readingValue);
+						MeterReadingDto newReading = await readingService.AddMeterReadingAsync(accountId, readingDT, readingValue);
+						if (newReading != null)
+						{
+							successful++;
+						}
 					}
 				}
 
@@ -80,8 +72,6 @@
 			}
 
 			readingsReader.Close();
-
-			int successful = await _context.SaveChangesAsync();
 
 			return Ok(new { successful, failed = total - successful });
 		}

@@ -1,6 +1,7 @@
 namespace MeterReadingsApi
 {
 	using MeterReadingsData;
+	using MeterReadingsService;
 	using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,9 @@ namespace MeterReadingsApi
 			// PM> Add-Migration initial
 			// PM> Update-Database
 			//// services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=meterreadings;Trusted_Connection=True;MultipleActiveResultSets=true"));
+
+			services.AddTransient<IAccountService, AccountService>();
+			services.AddTransient<IMeterReadingService, MeterReadingService>();
 
 			services.AddControllers();
 			services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MeterReadings", Version = "v1" }));
