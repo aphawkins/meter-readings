@@ -30,7 +30,7 @@ namespace MeterReadingsApi
 			// Comment out the InMemoryDatabase and uncomment out the next line, then follow the steps in Package Manager Console.
 			// PM> Add-Migration initial
 			// PM> Update-Database
-			//// services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=meterreadings;Trusted_Connection=True;MultipleActiveResultSets=true"));
+			//// services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer("MeterReadingsDatabase"));
 
 			services.AddTransient<IAccountService, AccountService>();
 			services.AddTransient<IMeterReadingService, MeterReadingService>();
