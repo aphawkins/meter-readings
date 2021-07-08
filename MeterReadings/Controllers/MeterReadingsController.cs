@@ -26,7 +26,7 @@
 		[HttpGet]
 		public IActionResult GetMeterReadings()
 		{
-			IQueryable<MeterReadingDto> readings = MeterReadingService.MapMeterReadingToDto(_context.MeterReadings);
+			IQueryable<MeterReadingDto> readings = _context.MeterReadings.MapMeterReadingToDto();
 
 			return Ok(readings);
 		}

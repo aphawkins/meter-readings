@@ -21,7 +21,8 @@
 		[HttpGet]
 		public ActionResult GetAccounts()
 		{
-			IQueryable<AccountDto> accounts = AccountService.MapAccountToDto(_context.Accounts);
+			IAccountService service = new AccountService(_context);
+			IQueryable<AccountDto> accounts = service.GetAllAccounts();
 			return Ok(accounts);
 		}
 
@@ -29,7 +30,8 @@
 		[HttpGet("{id}")]
 		public ActionResult GetAccountsItem(int id)
 		{
-			IQueryable<AccountDto> accounts = AccountService.MapAccountToDto(_context.Accounts.Where(x => id == x.Id));
+			IAccountService service = new AccountService(_context);
+			IQueryable<AccountDto> accounts = service.GetAccountById(id);
 			if (accounts == null)
 			{
 				return NotFound();
