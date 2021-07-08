@@ -6,6 +6,7 @@
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore.ChangeTracking;
 	using System;
+	using System.IO;
 	using System.Linq;
 	using System.Threading.Tasks;
 
@@ -51,6 +52,51 @@
 			}
 
 			return MapMeterReadingToDto(reading.Entity);
+		}
+
+
+		public async Task<(int total, int successful)> AddMeterReadingsAsync(StreamReader csvFile)
+		{
+			int successful = 0;
+			int total = 0;
+			string line;
+			IAccountService accountService = new AccountService(_context);
+
+			// Assume header on first line
+			await csvFile.ReadLineAsync();
+
+			while ((line = await csvFile.ReadLineAsync()) != null)
+			{
+				string[] details = line.Split(',');
+
+				if (details.Length >= 3 &&
+					int.TryParse(details[0], out int accountId) &&
+					DateTime.TryParse(details[1], out DateTime readingDT) &&
+					int.TryParse(details[2], out int readingValue) &&
+					readingValue >= 0 &&
+					readingValue < 100000)
+				{
+					// Does account exist?
+					AccountDto account = await accountService.GetAccountAsync(accountId);
+
+					// Does reading already exist?
+					MeterReadingDto reading = await GetMeterReadingAsync(accountId, readingDT);
+
+					if (account != null &&
+						reading == null)
+					{
+						MeterReadingDto newReading = await AddMeterReadingAsync(accountId, readingDT, readingValue);
+						if (newReading != null)
+						{
+							successful++;
+						}
+					}
+				}
+
+				total++;
+			}
+
+			return ( total, successful );
 		}
 
 		public async Task<int> DeleteAllMeterReadingsAsync()
