@@ -40,9 +40,9 @@
 
 			// Assert
 			Assert.Equal(2, accounts.Count);
-			Assert.Equal(1, accounts[0].AccountId);
+			Assert.Equal(1, accounts[0].Id);
 			Assert.Equal("One", accounts[0].FirstName);
-			Assert.Equal(2, accounts[1].AccountId);
+			Assert.Equal(2, accounts[1].Id);
 			Assert.Equal("Two", accounts[1].FirstName);
 		}
 
@@ -60,7 +60,7 @@
 			AccountDto account = GetObjectResultContent(actionResult);
 
 
-			Assert.Equal(1, account.AccountId);
+			Assert.Equal(1, account.Id);
 			Assert.Equal("One", account.FirstName);
 		}
 	}

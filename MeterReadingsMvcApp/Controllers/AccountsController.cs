@@ -1,25 +1,23 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
-	using System.Linq;
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
-	using Microsoft.EntityFrameworkCore;
-	using MeterReadingsData;
-	using MeterReadingsData.Models;
+	using MeterReadingsService;
+	using MeterReadings.DTO;
 
 	public class AccountsController : Controller
     {
-        private readonly MainDbContext _context;
+		private readonly IAccountService _service;
 
-        public AccountsController(MainDbContext context)
-        {
-            _context = context;
-        }
+		public AccountsController(IAccountService service)
+		{
+			_service = service;
+		}
 
         // GET: Accounts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Accounts.ToListAsync());
+			return View(_service.Read());
         }
 
         // GET: Accounts/Details/5
@@ -30,7 +28,7 @@
                 return NotFound();
             }
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.Id == id);
+            var account = await _service.ReadAsync(id.Value);
             if (account == null)
             {
                 return NotFound();
@@ -50,12 +48,11 @@
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] Account account)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] AccountDto account)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(account);
-                await _context.SaveChangesAsync();
+				await _service.CreateAsync(account);
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
@@ -69,7 +66,7 @@
                 return NotFound();
             }
 
-            var account = await _context.Accounts.FindAsync(id);
+            var account = await _service.ReadAsync(id.Value);
             if (account == null)
             {
                 return NotFound();
@@ -82,7 +79,7 @@
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] AccountDto account)
         {
             if (id != account.Id)
             {
@@ -91,22 +88,7 @@
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(account);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AccountExists(account.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _service.UpdateAsync(account);
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
@@ -120,7 +102,7 @@
                 return NotFound();
             }
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.Id == id);
+			AccountDto account = await _service.ReadAsync(id.Value);
             if (account == null)
             {
                 return NotFound();
@@ -135,15 +117,8 @@
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
-            _context.Accounts.Remove(account);
-            await _context.SaveChangesAsync();
+			await _service.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool AccountExists(int id)
-        {
-            return _context.Accounts.Any(e => e.Id == id);
         }
     }
 }

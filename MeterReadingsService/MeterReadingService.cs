@@ -77,7 +77,7 @@
 					readingValue < 100000)
 				{
 					// Does account exist?
-					AccountDto account = await accountService.GetAccountAsync(accountId);
+					AccountDto account = await accountService.ReadAsync(accountId);
 
 					// Does reading already exist?
 					MeterReadingDto reading = await GetMeterReadingAsync(accountId, readingDT);

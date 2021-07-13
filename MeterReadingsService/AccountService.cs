@@ -1,10 +1,12 @@
 ﻿namespace MeterReadingsService
 {
+	using System.Linq;
+	using System.Threading.Tasks;
 	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
-	using System.Linq;
-	using System.Threading.Tasks;
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 	public class AccountService : IAccountService
     {
@@ -15,14 +17,34 @@
 			_context = context;
 		}
 
-		public IQueryable<AccountDto> GetAllAccounts()
+		public async Task<AccountDto> CreateAsync(AccountDto item)
+		{
+			Account newAccount = new()
+			{
+				Id = item.Id,
+				FirstName = item.FirstName,
+				LastName = item.LastName
+			};
+
+			EntityEntry<Account> addedAccount = await _context.Accounts.AddAsync(newAccount);
+			if (addedAccount == null)
+			{
+				return null;
+			}
+
+			await _context.SaveChangesAsync();
+
+			return MapAccountToDto(addedAccount.Entity);
+		}
+
+		public IQueryable<AccountDto> Read()
 		{
 			return MapAccountToDto(_context.Accounts);
 		}
 
-		public async Task<AccountDto> GetAccountAsync(int accountId)
+		public async Task<AccountDto> ReadAsync(int id)
 		{
-			var account = await _context.Accounts.FindAsync(accountId);
+			Account account = await _context.Accounts.FindAsync(id);
 			if (account == null)
 			{
 				return null;
@@ -31,20 +53,48 @@
 			return MapAccountToDto(account);
 		}
 
-		public Account UpdateAccount(AccountDto dto)
+		public async Task<AccountDto> UpdateAsync(AccountDto item)
 		{
-			Account account = _context.Accounts.Find(dto.AccountId);
-			account.FirstName = dto.FirstName;
-			account.LastName = dto.LastName;
-			_context.SaveChanges();
-			return account;
+			Account account = _context.Accounts.Find(item.Id);
+
+			try
+			{
+				account.FirstName = item.FirstName;
+				account.LastName = item.LastName;
+				int numChanges = await _context.SaveChangesAsync();
+				if (numChanges < 1)
+				{
+					return null;
+				}
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!AccountExists(account.Id))
+				{
+					return null;
+				}
+			}
+
+			return MapAccountToDto(account);
+		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			Account account = await _context.Accounts.FindAsync(id);
+			_context.Accounts.Remove(account);
+			return await _context.SaveChangesAsync() > 0;
+		}
+
+		private bool AccountExists(int id)
+		{
+			return _context.Accounts.Any(e => e.Id == id);
 		}
 
 		private static AccountDto MapAccountToDto(Account account)
 		{
 			return new AccountDto
 			{
-				AccountId = account.Id,
+				Id = account.Id,
 				FirstName = account.FirstName,
 				LastName = account.LastName,
 			};

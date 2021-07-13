@@ -21,7 +21,7 @@
 		[HttpGet]
 		public ActionResult<IQueryable<AccountDto>> GetAccounts()
 		{
-			IQueryable<AccountDto> accounts = _service.GetAllAccounts();
+			IQueryable<AccountDto> accounts = _service.Read();
 			return Ok(accounts);
 		}
 
@@ -29,7 +29,7 @@
 		[HttpGet("{id}")]
 		public async Task<ActionResult<AccountDto>> GetAccount(int id)
 		{
-			AccountDto account = await _service.GetAccountAsync(id);
+			AccountDto account = await _service.ReadAsync(id);
 			if (account == null)
 			{
 				return NotFound();

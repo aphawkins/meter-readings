@@ -1,6 +1,7 @@
 namespace MeterReadingsMvcApp
 {
 	using MeterReadingsData;
+	using MeterReadingsService;
 	using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,9 @@ namespace MeterReadingsMvcApp
             services.AddControllersWithViews();
 
 			services.AddDbContext<MainDbContext>(opt => opt.UseInMemoryDatabase("MainDb"));
+
+			services.AddTransient<IAccountService, AccountService>();
+			services.AddTransient<IMeterReadingService, MeterReadingService>();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
