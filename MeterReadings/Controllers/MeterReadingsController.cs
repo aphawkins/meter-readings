@@ -12,28 +12,35 @@
 	[Route("meter-reading-uploads")]
 	public class MeterReadingsController : ControllerBase
 	{
-		[HttpGet]
-		public IActionResult GetMeterReadings([FromServices] IMeterReadingService service)
+		private readonly IMeterReadingService _service;
+
+		public MeterReadingsController(IMeterReadingService service)
 		{
-			IQueryable<MeterReadingDto> readings = service.GetAllMeterReadings();
+			_service = service;
+		}
+
+		[HttpGet]
+		public IActionResult GetMeterReadings()
+		{
+			IQueryable<MeterReadingDto> readings = _service.GetAllMeterReadings();
 
 			return Ok(readings);
 		}
 
 		[HttpDelete]
-		public async Task<IActionResult> DeleteMeterReadings([FromServices] IMeterReadingService service)
+		public async Task<IActionResult> DeleteMeterReadings()
 		{
-			int count = await service.DeleteAllMeterReadingsAsync();
+			int count = await _service.DeleteAllMeterReadingsAsync();
 
 			return Ok(new { deleted = count });
 		}
 
 		[HttpPost(Name = "PostMeterReadingsCsvFile")]
-		public async Task<IActionResult> OnPostUploadAsync([FromServices] IMeterReadingService readingService, IFormFile file)
+		public async Task<IActionResult> OnPostUploadAsync(IFormFile file)
 		{
 			using StreamReader readingsReader = new(file.OpenReadStream());
 
-			(int total, int successful) = await readingService.AddMeterReadingsAsync(readingsReader);
+			(int total, int successful) = await _service.AddMeterReadingsAsync(readingsReader);
 
 			readingsReader.Close();
 
