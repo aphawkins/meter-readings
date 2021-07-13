@@ -10,19 +10,26 @@
 	[ApiController]
 	public class AccountsController : ControllerBase
 	{
+		private readonly IAccountService _service;
+
+		public AccountsController(IAccountService service)
+		{
+			_service = service;
+		}
+
 		// GET: api/Accounts
 		[HttpGet]
-		public ActionResult<IQueryable<AccountDto>> GetAccounts([FromServices] IAccountService service)
+		public ActionResult<IQueryable<AccountDto>> GetAccounts()
 		{
-			IQueryable<AccountDto> accounts = service.GetAllAccounts();
+			IQueryable<AccountDto> accounts = _service.GetAllAccounts();
 			return Ok(accounts);
 		}
 
 		// GET: api/Accounts/5
 		[HttpGet("{id}")]
-		public async Task<ActionResult<AccountDto>> GetAccount([FromServices] IAccountService service, int id)
+		public async Task<ActionResult<AccountDto>> GetAccount(int id)
 		{
-			AccountDto account = await service.GetAccountAsync(id);
+			AccountDto account = await _service.GetAccountAsync(id);
 			if (account == null)
 			{
 				return NotFound();

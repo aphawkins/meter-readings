@@ -1,10 +1,10 @@
-namespace MeterReadingsTests
+namespace MeterReadingsApiTests
 {
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
 	using Microsoft.EntityFrameworkCore;
 
-    public class AccountsControllerTest
+	public class AccountsControllerTest
 	{
 		protected AccountsControllerTest(DbContextOptions<MainDbContext> contextOptions)
 		{

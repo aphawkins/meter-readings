@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsData", "MeterR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsService", "MeterReadingsService\MeterReadingsService.csproj", "{E619EC2C-58FF-43D9-A1DD-30CFB3026AA0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsTests", "MeterReadingsTests\MeterReadingsTests.csproj", "{995AE43D-EC5F-447D-BA0F-E0471E586EFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsApiTests", "MeterReadingsTests\MeterReadingsApiTests.csproj", "{995AE43D-EC5F-447D-BA0F-E0471E586EFE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsMvcApp", "MeterReadingsMvcApp\MeterReadingsMvcApp.csproj", "{D91474B8-4295-4B89-B24B-8CA3031B98F1}"
 EndProject
