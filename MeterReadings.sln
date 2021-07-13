@@ -14,9 +14,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsApi", "MeterRe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsData", "MeterReadingsData\MeterReadingsData.csproj", "{7CC762EF-DFA5-495A-8FFD-E1026E924D63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeterReadingsService", "MeterReadingsService\MeterReadingsService.csproj", "{E619EC2C-58FF-43D9-A1DD-30CFB3026AA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsService", "MeterReadingsService\MeterReadingsService.csproj", "{E619EC2C-58FF-43D9-A1DD-30CFB3026AA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeterReadingsTests", "MeterReadingsTests\MeterReadingsTests.csproj", "{995AE43D-EC5F-447D-BA0F-E0471E586EFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsTests", "MeterReadingsTests\MeterReadingsTests.csproj", "{995AE43D-EC5F-447D-BA0F-E0471E586EFE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsMvcApp", "MeterReadingsMvcApp\MeterReadingsMvcApp.csproj", "{D91474B8-4295-4B89-B24B-8CA3031B98F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{995AE43D-EC5F-447D-BA0F-E0471E586EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{995AE43D-EC5F-447D-BA0F-E0471E586EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{995AE43D-EC5F-447D-BA0F-E0471E586EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D91474B8-4295-4B89-B24B-8CA3031B98F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D91474B8-4295-4B89-B24B-8CA3031B98F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D91474B8-4295-4B89-B24B-8CA3031B98F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D91474B8-4295-4B89-B24B-8CA3031B98F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
