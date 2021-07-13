@@ -2,14 +2,14 @@
 {
 	using System.Linq;
 	using System.Threading.Tasks;
+	using MeterReadingsData;
+	using MeterReadingsData.Models;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.AspNetCore.Mvc.Rendering;
 	using Microsoft.EntityFrameworkCore;
-	using MeterReadingsData;
-	using MeterReadingsData.Models;
 
 	public class MeterReadingsController : Controller
-    {
+	{
         private readonly MainDbContext _context;
 
         public MeterReadingsController(MainDbContext context)
@@ -29,15 +29,15 @@
         {
             if (id == null)
             {
-                return NotFound();
-            }
+				return new NotFoundResult();
+			}
 
             var meterReading = await _context.MeterReadings
                 .Include(m => m.MyAccount)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meterReading == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
 
             return View(meterReading);
@@ -72,13 +72,13 @@
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
 
             var meterReading = await _context.MeterReadings.FindAsync(id);
             if (meterReading == null)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
             ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", meterReading.AccountId);
             return View(meterReading);
@@ -93,7 +93,7 @@
         {
             if (id != meterReading.Id)
             {
-                return NotFound();
+                return new NotFoundResult();
             }
 
             if (ModelState.IsValid)
@@ -107,7 +107,7 @@
                 {
                     if (!MeterReadingExists(meterReading.Id))
                     {
-                        return NotFound();
+                        return new NotFoundResult();
                     }
                     else
                     {
@@ -125,22 +125,23 @@
         {
             if (id == null)
             {
-                return NotFound();
-            }
+				return new NotFoundResult();
+			}
 
             var meterReading = await _context.MeterReadings
                 .Include(m => m.MyAccount)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meterReading == null)
             {
-                return NotFound();
-            }
+				return new NotFoundResult();
+			}
 
             return View(meterReading);
         }
 
         // POST: MeterReadings/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+		[ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

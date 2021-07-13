@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MeterReadingsControllers\MeterReadingsControllers.csproj" />
     <ProjectReference Include="..\MeterReadingsData\MeterReadingsData.csproj" />
     <ProjectReference Include="..\MeterReadingsService\MeterReadingsService.csproj" />
   </ItemGroup>
