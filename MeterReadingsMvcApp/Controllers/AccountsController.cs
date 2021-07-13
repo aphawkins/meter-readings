@@ -2,10 +2,10 @@
 {
 	using System.Linq;
 	using System.Threading.Tasks;
-	using MeterReadingsData;
-	using MeterReadingsData.Models;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
+	using MeterReadingsData;
+	using MeterReadingsData.Models;
 
 	public class AccountsController : Controller
     {
@@ -27,13 +27,13 @@
         {
             if (id == null)
             {
-                return new NotFoundResult();
+                return NotFound();
             }
 
             var account = await _context.Accounts.FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
-                return new NotFoundResult();
+                return NotFound();
             }
 
             return View(account);
@@ -66,14 +66,14 @@
         {
             if (id == null)
             {
-				return new NotFoundResult();
-			}
+                return NotFound();
+            }
 
             var account = await _context.Accounts.FindAsync(id);
             if (account == null)
             {
-				return new NotFoundResult();
-			}
+                return NotFound();
+            }
             return View(account);
         }
 
@@ -86,8 +86,8 @@
         {
             if (id != account.Id)
             {
-				return new NotFoundResult();
-			}
+                return NotFound();
+            }
 
             if (ModelState.IsValid)
             {
@@ -100,8 +100,8 @@
                 {
                     if (!AccountExists(account.Id))
                     {
-						return new NotFoundResult();
-					}
+                        return NotFound();
+                    }
                     else
                     {
                         throw;
@@ -117,14 +117,14 @@
         {
             if (id == null)
             {
-				return new NotFoundResult();
-			}
+                return NotFound();
+            }
 
             var account = await _context.Accounts.FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
-				return new NotFoundResult();
-			}
+                return NotFound();
+            }
 
             return View(account);
         }
