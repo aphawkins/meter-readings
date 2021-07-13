@@ -1,8 +1,6 @@
 namespace MeterReadingsMvcApp.Models
 {
-    using System;
-
-    public class ErrorViewModel
+	public class ErrorViewModel
     {
         public string RequestId { get; set; }
 

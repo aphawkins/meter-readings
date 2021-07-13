@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MeterReadingsData;
-using MeterReadingsData.Models;
-
-namespace MeterReadingsMvcApp.Controllers
+﻿namespace MeterReadingsMvcApp.Controllers
 {
-    public class MeterReadingsController : Controller
+	using System.Linq;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.AspNetCore.Mvc.Rendering;
+	using Microsoft.EntityFrameworkCore;
+	using MeterReadingsData;
+	using MeterReadingsData.Models;
+
+	public class MeterReadingsController : Controller
     {
         private readonly MainDbContext _context;
 

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MeterReadingsData;
-using MeterReadingsData.Models;
-
-namespace MeterReadingsMvcApp.Controllers
+﻿namespace MeterReadingsMvcApp.Controllers
 {
-    public class AccountsController : Controller
+	using System.Linq;
+	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Mvc;
+	using Microsoft.EntityFrameworkCore;
+	using MeterReadingsData;
+	using MeterReadingsData.Models;
+
+	public class AccountsController : Controller
     {
         private readonly MainDbContext _context;
 
@@ -33,8 +30,7 @@ namespace MeterReadingsMvcApp.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Accounts
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -124,8 +120,7 @@ namespace MeterReadingsMvcApp.Controllers
                 return NotFound();
             }
 
-            var account = await _context.Accounts
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var account = await _context.Accounts.FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -135,7 +130,8 @@ namespace MeterReadingsMvcApp.Controllers
         }
 
         // POST: Accounts/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+		[ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
