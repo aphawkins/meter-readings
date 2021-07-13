@@ -38,6 +38,11 @@ namespace MeterReadingsService
 		Task<T> UpdateAsync(T item);
 
 		/// <summary>
+		/// Removes all items from the repository.
+		/// </summary>
+		Task<int> DeleteAsync();
+
+		/// <summary>
 		/// Removes an item from the repository.
 		/// </summary>
 		/// <param name="item">The id of the item to delete.</param>

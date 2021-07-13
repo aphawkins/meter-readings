@@ -22,7 +22,7 @@
 		[HttpGet]
 		public IActionResult GetMeterReadings()
 		{
-			IQueryable<MeterReadingDto> readings = _service.GetAllMeterReadings();
+			IQueryable<MeterReadingDto> readings = _service.Read();
 
 			return Ok(readings);
 		}
@@ -30,7 +30,7 @@
 		[HttpDelete]
 		public async Task<IActionResult> DeleteMeterReadings()
 		{
-			int count = await _service.DeleteAllMeterReadingsAsync();
+			int count = await _service.DeleteAsync();
 
 			return Ok(new { deleted = count });
 		}

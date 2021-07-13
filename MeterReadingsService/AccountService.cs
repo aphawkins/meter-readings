@@ -78,6 +78,16 @@
 			return MapAccountToDto(account);
 		}
 
+		public async Task<int> DeleteAsync()
+		{
+			foreach (Account entity in _context.Accounts)
+			{
+				_context.Accounts.Remove(entity);
+			}
+
+			return await _context.SaveChangesAsync();
+		}
+
 		public async Task<bool> DeleteAsync(int id)
 		{
 			Account account = await _context.Accounts.FindAsync(id);

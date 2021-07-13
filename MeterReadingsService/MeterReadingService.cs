@@ -1,14 +1,14 @@
 ﻿namespace MeterReadingsService
 {
+	using System;
+	using System.IO;
+	using System.Linq;
+	using System.Threading.Tasks;
 	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore.ChangeTracking;
-	using System;
-	using System.IO;
-	using System.Linq;
-	using System.Threading.Tasks;
 
 	public class MeterReadingService : IMeterReadingService
 	{
@@ -19,30 +19,15 @@
 			_context = context;
 		}
 
-		public IQueryable<MeterReadingDto> GetAllMeterReadings()
-		{
-			return MapMeterReadingToDto(_context.MeterReadings);
-		}
-
-		public async Task<MeterReadingDto> GetMeterReadingAsync(int accountId, DateTime meterReadingDateTime)
-		{
-			MeterReading reading = await _context.MeterReadings.FirstOrDefaultAsync(x => x.AccountId == accountId && x.MeterReadingDateTime == meterReadingDateTime);
-			if (reading == null)
-			{
-				return null;
-			}
-
-			return MapMeterReadingToDto(reading);
-		}
-
-		public async Task<MeterReadingDto> AddMeterReadingAsync(int accountId, DateTime meterReadingDateTime, int meterReadingValue)
+		public async Task<MeterReadingDto> CreateAsync(MeterReadingDto item)
 		{
 			EntityEntry<MeterReading> reading = await _context.MeterReadings.AddAsync(
-				new MeterReading
+				new MeterReading()
 				{
-					AccountId = accountId,
-					MeterReadingDateTime = meterReadingDateTime,
-					MeterReadingValue = meterReadingValue,
+					Id = item.Id,
+					AccountId = item.AccountId,
+					MeterReadingDateTime = item.MeterReadingDateTime,
+					MeterReadingValue = item.MeterReadingValue,
 				});
 
 			int count = await _context.SaveChangesAsync();
@@ -54,6 +39,82 @@
 			return MapMeterReadingToDto(reading.Entity);
 		}
 
+		public IQueryable<MeterReadingDto> Read()
+		{
+			var temp = _context.MeterReadings.Include(m => m.MyAccount);
+			return MapMeterReadingToDto(temp);
+		}
+
+		public async Task<MeterReadingDto> ReadAsync(int id)
+		{
+			MeterReading meterReading = await _context.MeterReadings
+				.Include(m => m.MyAccount)
+				.FirstOrDefaultAsync(m => m.Id == id);
+
+			if (meterReading == null)
+			{
+				return null;
+			}
+
+			return MapMeterReadingToDto(meterReading);
+		}
+
+		private async Task<MeterReadingDto> ReadAsync(int accountId, DateTime meterReadingDateTime)
+		{
+			MeterReading meterReading = await _context.MeterReadings
+				.Include(m => m.MyAccount)
+				.FirstOrDefaultAsync(m => m.AccountId == accountId && m.MeterReadingDateTime == meterReadingDateTime);
+
+			if (meterReading == null)
+			{
+				return null;
+			}
+
+			return MapMeterReadingToDto(meterReading);
+		}
+
+		public async Task<MeterReadingDto> UpdateAsync(MeterReadingDto item)
+		{
+			MeterReading reading = _context.MeterReadings.Find(item.Id);
+
+			try
+			{
+				reading.MeterReadingDateTime = item.MeterReadingDateTime;
+				reading.MeterReadingValue = item.MeterReadingValue;
+				int numChanges = await _context.SaveChangesAsync();
+				if (numChanges < 1)
+				{
+					return null;
+				}
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!MeterReadingExists(reading.Id))
+				{
+					return null;
+				}
+			}
+
+
+			return MapMeterReadingToDto(reading);
+		}
+
+		public async Task<int> DeleteAsync()
+		{
+			foreach (MeterReading entity in _context.MeterReadings)
+			{
+				_context.MeterReadings.Remove(entity);
+			}
+
+			return await _context.SaveChangesAsync();
+		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			var meterReading = await _context.MeterReadings.FindAsync(id);
+			_context.MeterReadings.Remove(meterReading);
+			return await _context.SaveChangesAsync() > 0;
+		}
 
 		public async Task<(int total, int successful)> AddMeterReadingsAsync(StreamReader csvFile)
 		{
@@ -80,12 +141,17 @@
 					AccountDto account = await accountService.ReadAsync(accountId);
 
 					// Does reading already exist?
-					MeterReadingDto reading = await GetMeterReadingAsync(accountId, readingDT);
+					MeterReadingDto reading = await ReadAsync(accountId, readingDT);
 
 					if (account != null &&
 						reading == null)
 					{
-						MeterReadingDto newReading = await AddMeterReadingAsync(accountId, readingDT, readingValue);
+						MeterReadingDto newReading = await CreateAsync(new()
+						{
+							MeterReadingDateTime = readingDT,
+							MeterReadingValue = readingValue,
+						});
+
 						if (newReading != null)
 						{
 							successful++;
@@ -99,29 +165,25 @@
 			return ( total, successful );
 		}
 
-		public async Task<int> DeleteAllMeterReadingsAsync()
+		private bool MeterReadingExists(int id)
 		{
-			foreach (MeterReading entity in _context.MeterReadings)
-			{
-				_context.MeterReadings.Remove(entity);
-			}
-
-			return await _context.SaveChangesAsync();
+			return _context.MeterReadings.Any(e => e.Id == id);
 		}
 
 		private static MeterReadingDto MapMeterReadingToDto(MeterReading reading)
 		{
 			return new MeterReadingDto
 			{
+				Id = reading.Id,
 				AccountId = reading.AccountId,
 				MeterReadingDateTime = reading.MeterReadingDateTime,
-				MeterReadValue = reading.MeterReadingValue,
+				MeterReadingValue = reading.MeterReadingValue,
 			};
 		}
 
 		private static IQueryable<MeterReadingDto> MapMeterReadingToDto(IQueryable<MeterReading> readings)
 		{
-			return readings.Select(meterReading => MapMeterReadingToDto(meterReading));
+			return readings.Select(m => MapMeterReadingToDto(m));
 		}
 	}
 }

@@ -1,27 +1,26 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
-	using System.Linq;
 	using System.Threading.Tasks;
+	using MeterReadings.DTO;
+	using MeterReadingsService;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.AspNetCore.Mvc.Rendering;
-	using Microsoft.EntityFrameworkCore;
-	using MeterReadingsData;
-	using MeterReadingsData.Models;
 
 	public class MeterReadingsController : Controller
     {
-        private readonly MainDbContext _context;
+		private readonly IAccountService _accountService;
+		private readonly IMeterReadingService _readingService;
 
-        public MeterReadingsController(MainDbContext context)
+		public MeterReadingsController(IAccountService accountService, IMeterReadingService readingService)
         {
-            _context = context;
+			_accountService = accountService;
+			_readingService = readingService;
         }
 
         // GET: MeterReadings
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var mainDbContext = _context.MeterReadings.Include(m => m.MyAccount);
-            return View(await mainDbContext.ToListAsync());
+			return View(_readingService.Read());
         }
 
         // GET: MeterReadings/Details/5
@@ -32,9 +31,7 @@
                 return NotFound();
             }
 
-            var meterReading = await _context.MeterReadings
-                .Include(m => m.MyAccount)
-                .FirstOrDefaultAsync(m => m.Id == id);
+			MeterReadingDto meterReading = await _readingService.ReadAsync(id.Value);
             if (meterReading == null)
             {
                 return NotFound();
@@ -46,7 +43,7 @@
         // GET: MeterReadings/Create
         public IActionResult Create()
         {
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id");
             return View();
         }
 
@@ -55,15 +52,14 @@
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReading meterReading)
+        public async Task<IActionResult> Create([Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(meterReading);
-                await _context.SaveChangesAsync();
+				await _readingService.CreateAsync(meterReading);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", meterReading.AccountId);
+            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id", meterReading.AccountId);
             return View(meterReading);
         }
 
@@ -75,12 +71,12 @@
                 return NotFound();
             }
 
-            var meterReading = await _context.MeterReadings.FindAsync(id);
-            if (meterReading == null)
+			MeterReadingDto meterReading = await _readingService.ReadAsync(id.Value);
+			if (meterReading == null)
             {
                 return NotFound();
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", meterReading.AccountId);
+            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id", meterReading.AccountId);
             return View(meterReading);
         }
 
@@ -89,7 +85,7 @@
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReading meterReading)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
         {
             if (id != meterReading.Id)
             {
@@ -98,25 +94,10 @@
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(meterReading);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MeterReadingExists(meterReading.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+				await _readingService.UpdateAsync(meterReading);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AccountId"] = new SelectList(_context.Accounts, "Id", "Id", meterReading.AccountId);
+            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id", meterReading.AccountId);
             return View(meterReading);
         }
 
@@ -128,9 +109,7 @@
                 return NotFound();
             }
 
-            var meterReading = await _context.MeterReadings
-                .Include(m => m.MyAccount)
-                .FirstOrDefaultAsync(m => m.Id == id);
+			MeterReadingDto meterReading = await _readingService.ReadAsync(id.Value);
             if (meterReading == null)
             {
                 return NotFound();
@@ -140,19 +119,13 @@
         }
 
         // POST: MeterReadings/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+		[ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var meterReading = await _context.MeterReadings.FindAsync(id);
-            _context.MeterReadings.Remove(meterReading);
-            await _context.SaveChangesAsync();
+			await _readingService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MeterReadingExists(int id)
-        {
-            return _context.MeterReadings.Any(e => e.Id == id);
         }
     }
 }

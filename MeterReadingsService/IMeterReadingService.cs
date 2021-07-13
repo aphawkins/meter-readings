@@ -6,16 +6,8 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 
-	public interface IMeterReadingService
+	public interface IMeterReadingService : IRepository<MeterReadingDto>
 	{
-		public IQueryable<MeterReadingDto> GetAllMeterReadings();
-
-		public Task<MeterReadingDto> GetMeterReadingAsync(int accountId, DateTime meterReadingDateTime);
-
-		public Task<MeterReadingDto> AddMeterReadingAsync(int accountId, DateTime meterReadingDateTime, int meterReadingValue);
-
 		public Task<(int total, int successful)> AddMeterReadingsAsync(StreamReader csvFile);
-
-		public Task<int> DeleteAllMeterReadingsAsync();
 	}
 }
