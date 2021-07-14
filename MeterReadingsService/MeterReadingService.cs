@@ -21,14 +21,7 @@
 
 		public async Task<MeterReadingDto> CreateAsync(MeterReadingDto item)
 		{
-			EntityEntry<MeterReading> reading = await _context.MeterReadings.AddAsync(
-				new MeterReading()
-				{
-					Id = item.Id,
-					AccountId = item.AccountId,
-					MeterReadingDateTime = item.MeterReadingDateTime,
-					MeterReadingValue = item.MeterReadingValue,
-				});
+			EntityEntry<MeterReading> reading = await _context.MeterReadings.AddAsync(MapDtoToMeterReading(item));
 
 			int count = await _context.SaveChangesAsync();
 			if (count < 1)
@@ -111,7 +104,7 @@
 
 		public async Task<bool> DeleteAsync(int id)
 		{
-			var meterReading = await _context.MeterReadings.FindAsync(id);
+			MeterReading meterReading = await _context.MeterReadings.FindAsync(id);
 			_context.MeterReadings.Remove(meterReading);
 			return await _context.SaveChangesAsync() > 0;
 		}
@@ -168,6 +161,17 @@
 		private bool MeterReadingExists(int id)
 		{
 			return _context.MeterReadings.Any(e => e.Id == id);
+		}
+
+		private static MeterReading MapDtoToMeterReading(MeterReadingDto reading)
+		{
+			return new MeterReading()
+			{
+				Id = reading.Id,
+				AccountId = reading.AccountId,
+				MeterReadingDateTime = reading.MeterReadingDateTime,
+				MeterReadingValue = reading.MeterReadingValue,
+			};
 		}
 
 		private static MeterReadingDto MapMeterReadingToDto(MeterReading reading)

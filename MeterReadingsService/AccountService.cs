@@ -19,14 +19,7 @@
 
 		public async Task<AccountDto> CreateAsync(AccountDto item)
 		{
-			Account newAccount = new()
-			{
-				Id = item.Id,
-				FirstName = item.FirstName,
-				LastName = item.LastName
-			};
-
-			EntityEntry<Account> addedAccount = await _context.Accounts.AddAsync(newAccount);
+			EntityEntry<Account> addedAccount = await _context.Accounts.AddAsync(MapDtoToAccount(item));
 			if (addedAccount == null)
 			{
 				return null;
@@ -98,6 +91,16 @@
 		private bool AccountExists(int id)
 		{
 			return _context.Accounts.Any(e => e.Id == id);
+		}
+
+		private static Account MapDtoToAccount(AccountDto account)
+		{
+			return new()
+			{
+				Id = account.Id,
+				FirstName = account.FirstName,
+				LastName = account.LastName
+			};
 		}
 
 		private static AccountDto MapAccountToDto(Account account)
