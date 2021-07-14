@@ -3,9 +3,9 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using AutoMapper;
-	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
+	using MeterReadingsService.Dto;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore.ChangeTracking;
 

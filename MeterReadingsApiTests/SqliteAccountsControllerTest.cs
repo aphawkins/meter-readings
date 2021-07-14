@@ -2,10 +2,10 @@
 {
 	using System.Collections.Generic;
 	using System.Linq;
-	using MeterReadings.DTO;
 	using MeterReadingsApi.Controllers;
 	using MeterReadingsData;
 	using MeterReadingsService;
+	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 	using Xunit;

@@ -1,8 +1,8 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
 	using System.Threading.Tasks;
-	using MeterReadings.DTO;
 	using MeterReadingsService;
+	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.AspNetCore.Mvc.Rendering;
 

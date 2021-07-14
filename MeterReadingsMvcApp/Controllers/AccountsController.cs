@@ -3,7 +3,7 @@
 	using System.Threading.Tasks;
 	using Microsoft.AspNetCore.Mvc;
 	using MeterReadingsService;
-	using MeterReadings.DTO;
+	using MeterReadingsService.Dto;
 
 	public class AccountsController : Controller
     {

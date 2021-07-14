@@ -1,8 +1,8 @@
 ﻿namespace MeterReadingsService
 {
 	using AutoMapper;
-	using MeterReadings.DTO;
 	using MeterReadingsData.Models;
+	using MeterReadingsService.Dto;
 
 	internal static class MapperConfig
 	{

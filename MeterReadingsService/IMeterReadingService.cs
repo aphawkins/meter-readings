@@ -1,10 +1,8 @@
 ﻿namespace MeterReadingsService
 {
-	using MeterReadings.DTO;
-	using System;
 	using System.IO;
-	using System.Linq;
 	using System.Threading.Tasks;
+	using MeterReadingsService.Dto;
 
 	public interface IMeterReadingService : IRepository<MeterReadingDto>
 	{

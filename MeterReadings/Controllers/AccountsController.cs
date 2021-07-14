@@ -1,7 +1,7 @@
 ﻿namespace MeterReadingsApi.Controllers
 {
-	using MeterReadings.DTO;
 	using MeterReadingsService;
+	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Linq;
 	using System.Threading.Tasks;
