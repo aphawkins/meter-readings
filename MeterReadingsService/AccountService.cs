@@ -2,6 +2,7 @@
 {
 	using System.Linq;
 	using System.Threading.Tasks;
+	using AutoMapper;
 	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
@@ -30,10 +31,7 @@
 			return MapAccountToDto(addedAccount.Entity);
 		}
 
-		public IQueryable<AccountDto> Read()
-		{
-			return MapAccountToDto(_context.Accounts);
-		}
+		public IQueryable<AccountDto> Read() => MapAccountToDto(_context.Accounts);
 
 		public async Task<AccountDto> ReadAsync(int id)
 		{
@@ -88,34 +86,12 @@
 			return await _context.SaveChangesAsync() > 0;
 		}
 
-		private bool AccountExists(int id)
-		{
-			return _context.Accounts.Any(e => e.Id == id);
-		}
+		private bool AccountExists(int id) => _context.Accounts.Any(e => e.Id == id);
 
-		private static Account MapDtoToAccount(AccountDto account)
-		{
-			return new()
-			{
-				Id = account.Id,
-				FirstName = account.FirstName,
-				LastName = account.LastName
-			};
-		}
+		private static Account MapDtoToAccount(AccountDto account) => new Mapper(MapperConfig.Config).Map<Account>(account);
 
-		private static AccountDto MapAccountToDto(Account account)
-		{
-			return new AccountDto
-			{
-				Id = account.Id,
-				FirstName = account.FirstName,
-				LastName = account.LastName,
-			};
-		}
+		private static AccountDto MapAccountToDto(Account account) => new Mapper(MapperConfig.Config).Map<AccountDto>(account);
 
-		private static IQueryable<AccountDto> MapAccountToDto(IQueryable<Account> accounts)
-		{
-			return accounts.Select(account => MapAccountToDto(account));
-		}
+		private static IQueryable<AccountDto> MapAccountToDto(IQueryable<Account> accounts) => accounts.Select(account => MapAccountToDto(account));
 	}
 }

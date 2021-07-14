@@ -4,6 +4,7 @@
 	using System.IO;
 	using System.Linq;
 	using System.Threading.Tasks;
+	using AutoMapper;
 	using MeterReadings.DTO;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
@@ -32,11 +33,7 @@
 			return MapMeterReadingToDto(reading.Entity);
 		}
 
-		public IQueryable<MeterReadingDto> Read()
-		{
-			var temp = _context.MeterReadings.Include(m => m.MyAccount);
-			return MapMeterReadingToDto(temp);
-		}
+		public IQueryable<MeterReadingDto> Read() => MapMeterReadingToDto(_context.MeterReadings.Include(m => m.MyAccount));
 
 		public async Task<MeterReadingDto> ReadAsync(int id)
 		{
@@ -87,7 +84,6 @@
 					return null;
 				}
 			}
-
 
 			return MapMeterReadingToDto(reading);
 		}
@@ -158,36 +154,12 @@
 			return ( total, successful );
 		}
 
-		private bool MeterReadingExists(int id)
-		{
-			return _context.MeterReadings.Any(e => e.Id == id);
-		}
+		private bool MeterReadingExists(int id) => _context.MeterReadings.Any(e => e.Id == id);
 
-		private static MeterReading MapDtoToMeterReading(MeterReadingDto reading)
-		{
-			return new MeterReading()
-			{
-				Id = reading.Id,
-				AccountId = reading.AccountId,
-				MeterReadingDateTime = reading.MeterReadingDateTime,
-				MeterReadingValue = reading.MeterReadingValue,
-			};
-		}
+		private static MeterReading MapDtoToMeterReading(MeterReadingDto reading) => new Mapper(MapperConfig.Config).Map<MeterReading>(reading);
 
-		private static MeterReadingDto MapMeterReadingToDto(MeterReading reading)
-		{
-			return new MeterReadingDto
-			{
-				Id = reading.Id,
-				AccountId = reading.AccountId,
-				MeterReadingDateTime = reading.MeterReadingDateTime,
-				MeterReadingValue = reading.MeterReadingValue,
-			};
-		}
+		private static MeterReadingDto MapMeterReadingToDto(MeterReading reading) => new Mapper(MapperConfig.Config).Map<MeterReadingDto>(reading);
 
-		private static IQueryable<MeterReadingDto> MapMeterReadingToDto(IQueryable<MeterReading> readings)
-		{
-			return readings.Select(m => MapMeterReadingToDto(m));
-		}
+		private static IQueryable<MeterReadingDto> MapMeterReadingToDto(IQueryable<MeterReading> readings) => readings.Select(m => MapMeterReadingToDto(m));
 	}
 }
