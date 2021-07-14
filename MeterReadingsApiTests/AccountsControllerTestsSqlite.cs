@@ -10,19 +10,14 @@
 	using Microsoft.EntityFrameworkCore;
 	using Xunit;
 
-	public class SqliteAccountsControllerTest : AccountsControllerTest
+	public class AccountsControllerTestsSqlite : ControllerTestsBase
 	{
-		public SqliteAccountsControllerTest()
+		public AccountsControllerTestsSqlite()
 			: base(
 				new DbContextOptionsBuilder<MainDbContext>()
-					.UseSqlite("Filename=Test.db")
+					.UseSqlite($"Filename={nameof(AccountsControllerTestsSqlite)}.db")
 					.Options)
 		{
-		}
-
-		private static T GetObjectResultContent<T>(ActionResult<T> result)
-		{
-			return (T)((ObjectResult)result.Result).Value;
 		}
 
 		[Fact]
@@ -40,8 +35,10 @@
 
 			// Assert
 			Assert.Equal(2, accounts.Count);
+
 			Assert.Equal(1, accounts[0].Id);
 			Assert.Equal("One", accounts[0].FirstName);
+
 			Assert.Equal(2, accounts[1].Id);
 			Assert.Equal("Two", accounts[1].FirstName);
 		}
