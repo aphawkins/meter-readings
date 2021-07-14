@@ -2,7 +2,6 @@
 {
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Threading.Tasks;
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
@@ -20,11 +19,11 @@
 		}
 
 		[Fact]
-		public async Task Can_create_account()
+		public void Can_create_account()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 			AccountDto newAccount = new()
 			{
 				Id = 3,
@@ -33,14 +32,14 @@
 			};
 
 			// Act
-			AccountDto account = await service.CreateAsync(newAccount);
+			AccountDto account = service.Account.Create(newAccount);
 
 			// Assert
 			Assert.Equal(3, account.Id);
 			Assert.Equal("new", account.FirstName);
 			Assert.Equal("account", account.LastName);
 
-			Assert.Equal(3, service.Read().Count());
+			Assert.Equal(3, service.Account.Read().Count());
 		}
 
 		[Fact]
@@ -48,10 +47,10 @@
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			List<AccountDto> accounts = service.Read().ToList();
+			List<AccountDto> accounts = service.Account.Read().ToList();
 
 			// Assert
 			Assert.Equal(2, accounts.Count);
@@ -64,14 +63,14 @@
 		}
 
 		[Fact]
-		public async Task Can_read_account_by_id()
+		public void Can_read_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			AccountDto account = await service.ReadAsync(1);
+			AccountDto account = service.Account.Read(x => x.Id == 1).FirstOrDefault();
 
 			Assert.Equal(1, account.Id);
 			Assert.Equal("One", account.FirstName);
@@ -79,17 +78,17 @@
 		}
 
 		[Fact]
-		public async Task Can_update_account()
+		public void Can_update_account()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
-			AccountDto existing = await service.ReadAsync(1);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountDto existing = service.Account.Read(x => x.Id == 1).FirstOrDefault();
 			existing.FirstName = "updated";
 			existing.LastName = "account";
 
 			// Act
-			AccountDto account = await service.UpdateAsync(existing);
+			AccountDto account = service.Account.Update(existing);
 
 			// Assert
 			Assert.Equal(1, account.Id);
@@ -98,48 +97,45 @@
 		}
 
 		[Fact]
-		public async Task Can_delete_account_by_id()
+		public void Can_delete_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			bool isDeleted = await service.DeleteAsync(2);
+			service.Account.Delete(service.Account.Read(x => x.Id == 2).FirstOrDefault());
 
 			// Assert
-			Assert.True(isDeleted);
-			Assert.Equal(1, service.Read().Count());
+			Assert.Equal(1, service.Account.Read().Count());
 		}
 
 		[Fact]
-		public async Task Cant_delete_no_account_by_id()
+		public void Cant_delete_no_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			bool isDeleted = await service.DeleteAsync(3);
+			service.Account.Delete(null);
 
 			// Assert
-			Assert.False(isDeleted);
-			Assert.Equal(2, service.Read().Count());
+			Assert.Equal(2, service.Account.Read().Count());
 		}
 
 		[Fact]
-		public async Task Can_delete_all_accounts()
+		public void Can_delete_all_accounts()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IAccountService service = new AccountService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			int count = await service.DeleteAsync();
+			service.Account.Delete();
 
 			// Assert
-			Assert.Equal(2, count);
-			Assert.Empty(service.Read());
+			Assert.Empty(service.Account.Read());
 		}
 	}
 }

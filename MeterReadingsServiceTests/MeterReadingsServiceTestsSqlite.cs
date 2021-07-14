@@ -3,7 +3,6 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Threading.Tasks;
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
@@ -21,11 +20,11 @@
 		}
 
 		[Fact]
-		public async Task Can_create_meter_reading()
+		public void Can_create_meter_reading()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 			MeterReadingDto newReading = new()
 			{
 				Id = 3,
@@ -35,7 +34,7 @@
 			};
 
 			// Act
-			MeterReadingDto reading = await service.CreateAsync(newReading);
+			MeterReadingDto reading = service.MeterReading.Create(newReading);
 
 			// Assert
 			Assert.Equal(3, reading.Id);
@@ -43,7 +42,7 @@
 			Assert.Equal(new DateTime(2003, 3, 3), reading.MeterReadingDateTime);
 			Assert.Equal(3333, reading.MeterReadingValue);
 
-			Assert.Equal(3, service.Read().Count());
+			Assert.Equal(3, service.MeterReading.Read().Count());
 		}
 
 		[Fact]
@@ -51,10 +50,10 @@
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			List<MeterReadingDto> readings = service.Read().ToList();
+			List<MeterReadingDto> readings = service.MeterReading.Read().ToList();
 
 			// Assert
 			Assert.Equal(2, readings.Count);
@@ -71,35 +70,36 @@
 		}
 
 		[Fact]
-		public async Task Can_read_meter_reading_by_id()
+		public void Can_read_meter_reading_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			MeterReadingDto reading = await service.ReadAsync(1);
+			List<MeterReadingDto> readings = service.MeterReading.Read(e => e.Id == 1).ToList();
 
 			// Assert
-			Assert.Equal(1, reading.Id);
-			Assert.Equal(1, reading.AccountId);
-			Assert.Equal(new DateTime(2001, 1, 1), reading.MeterReadingDateTime);
-			Assert.Equal(1111, reading.MeterReadingValue);
+			Assert.Single(readings);
+			Assert.Equal(1, readings[0].Id);
+			Assert.Equal(1, readings[0].AccountId);
+			Assert.Equal(new DateTime(2001, 1, 1), readings[0].MeterReadingDateTime);
+			Assert.Equal(1111, readings[0].MeterReadingValue);
 		}
 
 
 		[Fact]
-		public async Task Can_update_meter_reading()
+		public void Can_update_meter_reading()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
-			MeterReadingDto existing = await service.ReadAsync(1);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingDto existing = service.MeterReading.Read(x => x.Id == 1).FirstOrDefault();
 			existing.MeterReadingDateTime = new DateTime(2011, 11, 11);
 			existing.MeterReadingValue = 11111;
 
 			// Act
-			MeterReadingDto reading = await service.UpdateAsync(existing);
+			MeterReadingDto reading = service.MeterReading.Update(existing);
 
 			// Assert
 			Assert.Equal(1, reading.Id);
@@ -109,48 +109,47 @@
 		}
 
 		[Fact]
-		public async Task Can_delete_meter_reading_by_id()
+		public void Can_delete_meter_reading_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingDto reading = service.MeterReading.Read(x => x.Id == 1).FirstOrDefault();
 
 			// Act
-			bool isDeleted = await service.DeleteAsync(2);
+			service.MeterReading.Delete(reading);
 
 			// Assert
-			Assert.True(isDeleted);
-			Assert.Equal(1, service.Read().Count());
+			Assert.Empty(service.MeterReading.Read(x => x.Id == 1));
+			Assert.Equal(1, service.MeterReading.Read().Count());
 		}
 
 		[Fact]
-		public async Task Cant_delete_no_meter_reading_by_id()
+		public void Cant_delete_no_meter_reading_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			bool isDeleted = await service.DeleteAsync(3);
+			service.MeterReading.Delete(null);
 
 			// Assert
-			Assert.False(isDeleted);
-			Assert.Equal(2, service.Read().Count());
+			Assert.Equal(2, service.MeterReading.Read().Count());
 		}
 
 		[Fact]
-		public async Task Can_delete_all_meter_readings()
+		public void Can_delete_all_meter_readings()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			IMeterReadingService service = new MeterReadingService(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			int count = await service.DeleteAsync();
+			service.MeterReading.Delete();
 
 			// Assert
-			Assert.Equal(2, count);
-			Assert.Empty(service.Read());
+			Assert.Empty(service.MeterReading.Read());
 		}
 	}
 }

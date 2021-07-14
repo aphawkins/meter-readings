@@ -25,7 +25,7 @@
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			AccountService service = new(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 			AccountsController controller = new(service);
 
 			// Act
@@ -48,7 +48,7 @@
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			AccountService service = new(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 			AccountsController controller = new(service);
 
 			// Act

@@ -28,7 +28,7 @@
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			MeterReadingService service = new(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 			MeterReadingsController controller = new(service);
 
 			// Act
@@ -55,24 +55,24 @@
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
-			MeterReadingService service = new(context);
+			IMeterReadingsService service = new MeterReadingsService(context);
 			MeterReadingsController controller = new(service);
 
 			// Act
-			ActionResult<object> actionResult = controller.DeleteMeterReadings().Result;
+			ActionResult<object> actionResult = controller.DeleteMeterReadings();
 			Assert.IsType<OkObjectResult>(actionResult.Result);
 			object response = GetObjectResultContent(actionResult);
 
 			DeleteMeterReadingsResponse reading = JObject.FromObject(response).ToObject<DeleteMeterReadingsResponse>();
 
 			// Assert
-			Assert.Equal(2, reading.Deleted);
+			Assert.True(reading.Deleted);
 		}
 
 		private class DeleteMeterReadingsResponse
 		{
 			[JsonProperty("deleted")]
-			public int Deleted { get; set; }
+			public bool Deleted { get; set; }
 		}
 	}
 }

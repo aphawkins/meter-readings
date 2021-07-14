@@ -6,16 +6,15 @@
 	using Microsoft.AspNetCore.Mvc;
 	using System.IO;
 	using System.Linq;
-	using System.Text.Json;
 	using System.Threading.Tasks;
 
 	[ApiController]
 	[Route("meter-reading-uploads")]
 	public class MeterReadingsController : ControllerBase
 	{
-		private readonly IMeterReadingService _service;
+		private readonly IMeterReadingsService _service;
 
-		public MeterReadingsController(IMeterReadingService service)
+		public MeterReadingsController(IMeterReadingsService service)
 		{
 			_service = service;
 		}
@@ -23,15 +22,15 @@
 		[HttpGet]
 		public ActionResult<IQueryable<MeterReadingDto>> GetMeterReadings()
 		{
-			IQueryable<MeterReadingDto> readings = _service.Read();
+			IQueryable<MeterReadingDto> readings = _service.MeterReading.Read();
 			return Ok(readings);
 		}
 
 		[HttpDelete]
-		public async Task<ActionResult> DeleteMeterReadings()
+		public ActionResult DeleteMeterReadings()
 		{
-			int count = await _service.DeleteAsync();
-			return Ok(new { deleted = count });
+			_service.MeterReading.Delete();
+			return Ok(new { deleted = true });
 		}
 
 		[HttpPost(Name = "PostMeterReadingsCsvFile")]
@@ -39,7 +38,7 @@
 		{
 			using StreamReader readingsReader = new(file.OpenReadStream());
 
-			(int total, int successful) = await _service.AddMeterReadingsAsync(readingsReader);
+			(int total, int successful) = await _service.MeterReading.AddMeterReadingsAsync(readingsReader);
 
 			readingsReader.Close();
 

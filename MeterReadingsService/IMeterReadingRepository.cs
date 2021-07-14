@@ -2,9 +2,9 @@
 {
 	using System.IO;
 	using System.Threading.Tasks;
-	using MeterReadingsService.Dto;
+	using global::MeterReadingsService.Dto;
 
-	public interface IMeterReadingService : IRepository<MeterReadingDto>
+	public interface IMeterReadingRepository : IRepository<MeterReadingDto>
 	{
 		public Task<(int total, int successful)> AddMeterReadingsAsync(StreamReader csvFile);
 	}

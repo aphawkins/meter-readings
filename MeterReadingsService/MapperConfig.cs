@@ -2,7 +2,7 @@
 {
 	using AutoMapper;
 	using MeterReadingsData.Models;
-	using MeterReadingsService.Dto;
+	using global::MeterReadingsService.Dto;
 
 	internal static class MapperConfig
 	{

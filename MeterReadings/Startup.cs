@@ -4,7 +4,6 @@ namespace MeterReadingsApi
 	using MeterReadingsService;
 	using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Hosting;
-	using Microsoft.EntityFrameworkCore;
 	using Microsoft.Extensions.Configuration;
 	using Microsoft.Extensions.DependencyInjection;
 	using Microsoft.Extensions.Hosting;
@@ -22,19 +21,7 @@ namespace MeterReadingsApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			// For simplicity use an InMemoryDatabase
-			// Note: this doesn't support referential integrity
-			services.AddDbContext<MainDbContext>(opt => opt.UseInMemoryDatabase("MainDb"));
-
-			// To ensure referential integrity use a SQL Server DB.
-			// Comment out the InMemoryDatabase and uncomment out the next line, then follow the steps in Package Manager Console.
-			// PM> Add-Migration initial
-			// PM> Update-Database
-			//// services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer("MeterReadingsDatabase"));
-
-			services.AddTransient<IAccountService, AccountService>();
-			services.AddTransient<IMeterReadingService, MeterReadingService>();
-
+			services.ConfigureRepositoryWrapper();
 			services.AddControllers();
 			services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MeterReadings", Version = "v1" }));
 		}

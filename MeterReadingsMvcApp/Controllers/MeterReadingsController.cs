@@ -1,6 +1,6 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
-	using System.Threading.Tasks;
+	using System.Linq;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
@@ -8,124 +8,122 @@
 
 	public class MeterReadingsController : Controller
     {
-		private readonly IAccountService _accountService;
-		private readonly IMeterReadingService _readingService;
+		private readonly IMeterReadingsService _service;
 
-		public MeterReadingsController(IAccountService accountService, IMeterReadingService readingService)
+		public MeterReadingsController(IMeterReadingsService service)
         {
-			_accountService = accountService;
-			_readingService = readingService;
+			_service = service;
         }
 
         // GET: MeterReadings
         public IActionResult Index()
         {
-			return View(_readingService.Read());
+			return View(_service.MeterReading.Read());
         }
 
-        // GET: MeterReadings/Details/5
-        public async Task<IActionResult> Details(int? id)
+		// GET: MeterReadings/Details/5
+		public IActionResult Details(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			MeterReadingDto meterReading = _service.MeterReading.Read(x => x.Id == id.Value).FirstOrDefault();
+			if (meterReading == null)
+			{
+				return NotFound();
+			}
+
+			return View(meterReading);
+		}
+
+		// GET: MeterReadings/Create
+		public IActionResult Create()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-			MeterReadingDto meterReading = await _readingService.ReadAsync(id.Value);
-            if (meterReading == null)
-            {
-                return NotFound();
-            }
-
-            return View(meterReading);
-        }
-
-        // GET: MeterReadings/Create
-        public IActionResult Create()
-        {
-            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id");
+            ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id");
             return View();
         }
 
-        // POST: MeterReadings/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
-        {
-            if (ModelState.IsValid)
-            {
-				await _readingService.CreateAsync(meterReading);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id", meterReading.AccountId);
-            return View(meterReading);
-        }
+		// POST: MeterReadings/Create
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Create([Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
+		{
+			if (ModelState.IsValid)
+			{
+				_service.MeterReading.Create(meterReading);
+				return RedirectToAction(nameof(Index));
+			}
+			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
+			return View(meterReading);
+		}
 
-        // GET: MeterReadings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		// GET: MeterReadings/Edit/5
+		public IActionResult Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-			MeterReadingDto meterReading = await _readingService.ReadAsync(id.Value);
+			MeterReadingDto meterReading = _service.MeterReading.Read(x => x.Id == id.Value).FirstOrDefault();
 			if (meterReading == null)
-            {
-                return NotFound();
-            }
-            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id", meterReading.AccountId);
-            return View(meterReading);
-        }
+			{
+				return NotFound();
+			}
+			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
+			return View(meterReading);
+		}
 
-        // POST: MeterReadings/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
-        {
-            if (id != meterReading.Id)
-            {
-                return NotFound();
-            }
+		// POST: MeterReadings/Edit/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to.
+		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Edit(int id, [Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
+		{
+			if (id != meterReading.Id)
+			{
+				return NotFound();
+			}
 
-            if (ModelState.IsValid)
-            {
-				await _readingService.UpdateAsync(meterReading);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["AccountId"] = new SelectList(_accountService.Read(), "Id", "Id", meterReading.AccountId);
-            return View(meterReading);
-        }
+			if (ModelState.IsValid)
+			{
+				_service.MeterReading.Update(meterReading);
+				return RedirectToAction(nameof(Index));
+			}
+			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
+			return View(meterReading);
+		}
 
-        // GET: MeterReadings/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		// GET: MeterReadings/Delete/5
+		public IActionResult Delete(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-			MeterReadingDto meterReading = await _readingService.ReadAsync(id.Value);
-            if (meterReading == null)
-            {
-                return NotFound();
-            }
+			MeterReadingDto meterReading = _service.MeterReading.Read(x => x.Id == id.Value).FirstOrDefault();
+			if (meterReading == null)
+			{
+				return NotFound();
+			}
 
-            return View(meterReading);
-        }
+			return View(meterReading);
+		}
 
-        // POST: MeterReadings/Delete/5
-        [HttpPost]
+		// POST: MeterReadings/Delete/5
+		[HttpPost]
 		[ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-			await _readingService.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
-    }
+		[ValidateAntiForgeryToken]
+		public IActionResult DeleteConfirmed(int id)
+		{
+			_service.MeterReading.Delete(_service.MeterReading.Read(x => x.Id == id).FirstOrDefault());
+			return RedirectToAction(nameof(Index));
+		}
+	}
 }

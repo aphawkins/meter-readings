@@ -10,18 +10,12 @@
 
 	public static class DataGenerator
     {
-        public static void Initialize(IServiceProvider serviceProvider)
-        {
-            using var context = new MainDbContext(serviceProvider.GetRequiredService<DbContextOptions<MainDbContext>>());
+		public static void Initialize(IServiceProvider serviceProvider)
+		{
+			using var context = new MainDbContext(serviceProvider.GetRequiredService<DbContextOptions<MainDbContext>>());
 
-            // Check if data is already present
-            if (context.Accounts.Any())
-            {
-                return;
-            }
-
-            // Read the test accounts file.
-            string line;
+			// Read the test accounts file.
+			string line;
             using (StreamReader file = new(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Test_Accounts.csv")))
             {
                 while ((line = file.ReadLine()) != null)

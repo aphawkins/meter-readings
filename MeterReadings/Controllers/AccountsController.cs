@@ -4,15 +4,14 @@
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Linq;
-	using System.Threading.Tasks;
 
 	[Route("api/[controller]")]
 	[ApiController]
 	public class AccountsController : ControllerBase
 	{
-		private readonly IAccountService _service;
+		private readonly IMeterReadingsService _service;
 
-		public AccountsController(IAccountService service)
+		public AccountsController(IMeterReadingsService service)
 		{
 			_service = service;
 		}
@@ -21,15 +20,15 @@
 		[HttpGet]
 		public ActionResult<IQueryable<AccountDto>> GetAccounts()
 		{
-			IQueryable<AccountDto> accounts = _service.Read();
+			IQueryable<AccountDto> accounts = _service.Account.Read();
 			return Ok(accounts);
 		}
 
 		// GET: api/Accounts/5
 		[HttpGet("{id}")]
-		public async Task<ActionResult<AccountDto>> GetAccount(int id)
+		public ActionResult<AccountDto> GetAccount(int id)
 		{
-			AccountDto account = await _service.ReadAsync(id);
+			AccountDto account = _service.Account.Read(x => x.Id == id).FirstOrDefault();
 			if (account == null)
 			{
 				return NotFound();

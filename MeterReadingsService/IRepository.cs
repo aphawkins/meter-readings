@@ -4,49 +4,48 @@
 
 namespace MeterReadingsService
 {
+	using System;
 	using System.Linq;
-	using System.Threading.Tasks;
+	using System.Linq.Expressions;
 
 	/// <summary>
 	/// A generic repository.
 	/// </summary>
-	/// <typeparam name="T">The type of items stored in the repository.</typeparam>
-	public interface IRepository<T>
+	/// <typeparam name="TDto">The type of items stored in the repository.</typeparam>
+	public interface IRepository<TDto>
     {
         /// <summary>
         /// Adds a new item to the repository.
         /// </summary>
-        /// <param name="item">The new item to add.</param>
-        Task<T> CreateAsync(T item);
+        /// <param name="entity">The new item to add.</param>
+        TDto Create(TDto dto);
 
         /// <summary>
         /// Retrieves all the items.
         /// </summary>
         /// <returns>All the items.</returns>
-        IQueryable<T> Read();
+        IQueryable<TDto> Read();
 
 		/// <summary>
-		/// Retrieves an item.
+		/// Retrieves an item by expression.
 		/// </summary>
-		/// <returns>The item by id.</returns>
-		Task<T> ReadAsync(int id);
+		/// <returns>The item by expression.</returns>
+		IQueryable<TDto> Read(Expression<Func<TDto, bool>> expression);
 
 		/// <summary>
 		/// Updates an item in the repository.
 		/// </summary>
-		/// <param name="item">The item to update.</param>
-		Task<T> UpdateAsync(T item);
+		/// <param name="entity">The item to update.</param>
+		TDto Update(TDto dto);
 
 		/// <summary>
 		/// Removes all items from the repository.
 		/// </summary>
-		Task<int> DeleteAsync();
+		void Delete();
 
 		/// <summary>
-		/// Removes an item from the repository.
+		/// Removes an entity from the repository.
 		/// </summary>
-		/// <param name="item">The id of the item to delete.</param>
-		Task<bool> DeleteAsync(int id);
-
+		void Delete(TDto dto);
 	}
 }
