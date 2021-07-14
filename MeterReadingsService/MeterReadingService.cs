@@ -101,6 +101,11 @@
 		public async Task<bool> DeleteAsync(int id)
 		{
 			MeterReading meterReading = await _context.MeterReadings.FindAsync(id);
+			if (meterReading == null)
+			{
+				return false;
+			}
+
 			_context.MeterReadings.Remove(meterReading);
 			return await _context.SaveChangesAsync() > 0;
 		}

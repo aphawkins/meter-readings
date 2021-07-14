@@ -1,9 +1,8 @@
-namespace MeterReadingsApiTests
+namespace MeterReadingsServiceTests
 {
 	using System;
 	using MeterReadingsData;
 	using MeterReadingsData.Models;
-	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 
 	public class ControllerTestsBase
@@ -16,11 +15,6 @@ namespace MeterReadingsApiTests
 		}
 
 		protected DbContextOptions<MainDbContext> ContextOptions { get; }
-
-		protected static T GetObjectResultContent<T>(ActionResult<T> result)
-		{
-			return (T)((ObjectResult)result.Result).Value;
-		}
 
 		private void Seed()
 		{

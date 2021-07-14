@@ -82,6 +82,11 @@
 		public async Task<bool> DeleteAsync(int id)
 		{
 			Account account = await _context.Accounts.FindAsync(id);
+			if (account == null)
+			{
+				return false;
+			}
+
 			_context.Accounts.Remove(account);
 			return await _context.SaveChangesAsync() > 0;
 		}
