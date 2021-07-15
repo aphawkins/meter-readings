@@ -20,7 +20,9 @@ namespace MeterReadingsMvcApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-			services.ConfigureRepositoryWrapper();
+
+			services.ConfigureInMemoryDatabase("MainDb");
+			services.ConfigureMeterReadingsService();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

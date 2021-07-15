@@ -6,18 +6,25 @@
 
 	public static class ServiceExtensions
 	{
-		public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+		public static void ConfigureInMemoryDatabase(this IServiceCollection services, string connectionString)
 		{
-			// For simplicity use an InMemoryDatabase
 			// Note: this doesn't support referential integrity
-			services.AddDbContext<MainDbContext>(opt => opt.UseInMemoryDatabase("MainDb"));
+			services.AddDbContext<MainDbContext>(opt => opt.UseInMemoryDatabase(connectionString));
 
+			DataGenerator.Seed(new DbContextOptionsBuilder().UseInMemoryDatabase(connectionString));
+		}
+
+		public static void ConfigureMeterReadingsDbContext(this IServiceCollection services, string connectionString)
+		{
 			// To ensure referential integrity use a SQL Server DB.
-			// Comment out the InMemoryDatabase and uncomment out the next line, then follow the steps in Package Manager Console.
+			services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer(connectionString));
+
 			// PM> Add-Migration initial
 			// PM> Update-Database
-			//// services.AddDbContext<MainDbContext>(opt => opt.UseSqlServer("MeterReadingsDatabase"));
+		}
 
+		public static void ConfigureMeterReadingsService(this IServiceCollection services)
+		{
 			services.AddScoped<IMeterReadingsService, MeterReadingsService>();
 		}
 	}

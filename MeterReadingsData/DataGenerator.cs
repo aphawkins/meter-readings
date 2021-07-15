@@ -7,9 +7,9 @@
 
 	public static class DataGenerator
 	{
-		public static void Seed(DbContextOptions<MainDbContext> contextOptions)
+		public static void Seed(DbContextOptionsBuilder contextOptions)
 		{
-			using MainDbContext context = new(contextOptions);
+			using MainDbContext context = new(contextOptions.Options);
 			context.Database.EnsureDeleted();
 			context.Database.EnsureCreated();
 
