@@ -1,6 +1,5 @@
 namespace MeterReadingsApi
 {
-	using MeterReadingsData;
 	using MeterReadingsService;
 	using Microsoft.AspNetCore.Builder;
 	using Microsoft.AspNetCore.Hosting;
