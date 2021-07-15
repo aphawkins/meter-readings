@@ -2,6 +2,7 @@
 {
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading.Tasks;
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
@@ -19,7 +20,7 @@
 		}
 
 		[Fact]
-		public void Can_create_account()
+		public async Task Can_create_account()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -39,18 +40,18 @@
 			Assert.Equal("new", account.FirstName);
 			Assert.Equal("account", account.LastName);
 
-			Assert.Equal(3, service.Account.Read().Count());
+			Assert.Equal(3, (await service.Account.ReadAsync()).Count());
 		}
 
 		[Fact]
-		public void Can_read_all_accounts()
+		public async Task Can_read_all_accounts()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			List<AccountDto> accounts = service.Account.Read().ToList();
+			List<AccountDto> accounts = (await service.Account.ReadAsync()).ToList();
 
 			// Assert
 			Assert.Equal(2, accounts.Count);
@@ -97,7 +98,7 @@
 		}
 
 		[Fact]
-		public void Can_delete_account_by_id()
+		public async Task Can_delete_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -107,11 +108,11 @@
 			service.Account.Delete(service.Account.Read(x => x.Id == 2).FirstOrDefault());
 
 			// Assert
-			Assert.Equal(1, service.Account.Read().Count());
+			Assert.Equal(1, (await service.Account.ReadAsync()).Count());
 		}
 
 		[Fact]
-		public void Cant_delete_no_account_by_id()
+		public async Task Cant_delete_no_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -121,11 +122,11 @@
 			service.Account.Delete(null);
 
 			// Assert
-			Assert.Equal(2, service.Account.Read().Count());
+			Assert.Equal(2, (await service.Account.ReadAsync()).Count());
 		}
 
 		[Fact]
-		public void Can_delete_all_accounts()
+		public async Task Can_delete_all_accounts()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -135,7 +136,7 @@
 			service.Account.Delete();
 
 			// Assert
-			Assert.Empty(service.Account.Read());
+			Assert.Empty(await service.Account.ReadAsync());
 		}
 	}
 }

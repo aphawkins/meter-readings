@@ -1,8 +1,10 @@
 ﻿namespace MeterReadingsService
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
 	using System.Linq.Expressions;
+	using System.Threading.Tasks;
 	using AutoMapper;
 	using AutoMapper.QueryableExtensions;
 	using MeterReadingsData;
@@ -14,11 +16,16 @@
 
 		protected RepositoryBase(MainDbContext repositoryContext) => RepositoryContext = repositoryContext;
 
-		public IQueryable<TDto> Read()
+		public async Task <IEnumerable<TDto>> ReadAsync()
 		{
-			return RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config);
+			return await RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config).ToListAsync();
 		}
 
+		public async Task<IEnumerable<T>> ReadAsync<T>(MapperConfiguration mapperConfig)
+		{
+			return await RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<T>(mapperConfig).ToListAsync();
+		}
+		
 		public IQueryable<TDto> Read(Expression<Func<TDto, bool>> expression)
 		{
 			return RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config).Where(expression);

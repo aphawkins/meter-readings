@@ -1,6 +1,7 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
 	using System.Linq;
+	using System.Threading.Tasks;
 	using AutoMapper;
 	using AutoMapper.QueryableExtensions;
 	using MeterReadingsMvcApp.Models;
@@ -19,9 +20,9 @@
         }
 
         // GET: MeterReadings
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-			return View(_service.MeterReading.Read().ProjectTo<MeterReadingViewModel>(MapperConfig.Config));
+			return View(await _service.MeterReading.ReadAsync<MeterReadingViewModel>(MapperConfig.Config));
         }
 
 		// GET: MeterReadings/Details/5
@@ -42,9 +43,9 @@
 		}
 
 		// GET: MeterReadings/Create
-		public IActionResult Create()
+		public async Task<IActionResult> Create()
         {
-            ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id");
+            ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id");
             return View();
         }
 
@@ -53,19 +54,19 @@
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Create([Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
+		public async Task<IActionResult> Create([Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
 		{
 			if (ModelState.IsValid)
 			{
 				_service.MeterReading.Create(meterReading);
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
+			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
 			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Edit/5
-		public IActionResult Edit(int? id)
+		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null)
 			{
@@ -77,7 +78,7 @@
 			{
 				return NotFound();
 			}
-			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
+			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
 			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
@@ -86,7 +87,7 @@
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Edit(int id, [Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,AccountId,MeterReadingDateTime,MeterReadingValue")] MeterReadingDto meterReading)
 		{
 			if (id != meterReading.Id)
 			{
@@ -98,7 +99,7 @@
 				_service.MeterReading.Update(meterReading);
 				return RedirectToAction(nameof(Index));
 			}
-			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
+			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
 			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 

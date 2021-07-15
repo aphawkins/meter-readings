@@ -3,7 +3,9 @@
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
+	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading.Tasks;
 
 	[Route("api/[controller]")]
 	[ApiController]
@@ -18,9 +20,9 @@
 
 		// GET: api/Accounts
 		[HttpGet]
-		public ActionResult<IQueryable<AccountDto>> GetAccounts()
+		public async Task<ActionResult<IEnumerable<AccountDto>>> GetAccounts()
 		{
-			IQueryable<AccountDto> accounts = _service.Account.Read();
+			IEnumerable<AccountDto> accounts = await _service.Account.ReadAsync();
 			return Ok(accounts);
 		}
 

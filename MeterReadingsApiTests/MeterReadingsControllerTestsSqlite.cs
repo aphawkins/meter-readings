@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading.Tasks;
 	using MeterReadingsApi.Controllers;
 	using MeterReadingsData;
 	using MeterReadingsService;
@@ -24,7 +25,7 @@
 		}
 
 		[Fact]
-		public void Can_get_meter_readings()
+		public async Task Can_get_meter_readings()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -32,7 +33,7 @@
 			MeterReadingsController controller = new(service);
 
 			// Act
-			ActionResult<IQueryable<MeterReadingDto>> actionResult = controller.GetMeterReadings();
+			ActionResult<IEnumerable<MeterReadingDto>> actionResult = await controller.GetMeterReadings();
 			Assert.IsType<OkObjectResult>(actionResult.Result);
 			List<MeterReadingDto> readings = GetObjectResultContent(actionResult).ToList();
 

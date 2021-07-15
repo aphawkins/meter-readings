@@ -2,6 +2,7 @@
 {
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading.Tasks;
 	using MeterReadingsApi.Controllers;
 	using MeterReadingsData;
 	using MeterReadingsService;
@@ -21,7 +22,7 @@
 		}
 
 		[Fact]
-		public void Can_get_accounts()
+		public async Task Can_get_accounts()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -29,7 +30,7 @@
 			AccountsController controller = new(service);
 
 			// Act
-			ActionResult<IQueryable<AccountDto>> actionResult = controller.GetAccounts();
+			ActionResult<IEnumerable<AccountDto>> actionResult = await controller.GetAccounts();
 			Assert.IsType<OkObjectResult>(actionResult.Result);
 			List<AccountDto> accounts = GetObjectResultContent(actionResult).ToList();
 

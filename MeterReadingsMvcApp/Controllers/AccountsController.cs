@@ -7,6 +7,7 @@
 	using MeterReadingsMvcApp.Models;
 	using AutoMapper.QueryableExtensions;
 	using AutoMapper;
+	using System.Threading.Tasks;
 
 	public class AccountsController : Controller
     {
@@ -18,9 +19,9 @@
 		}
 
         // GET: Accounts
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-			return View(_service.Account.Read().ProjectTo<AccountViewModel>(MapperConfig.Config));
+			return View(await _service.Account.ReadAsync<AccountViewModel>(MapperConfig.Config));
         }
 
 		// GET: Accounts/Details/5

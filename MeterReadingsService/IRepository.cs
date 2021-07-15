@@ -5,8 +5,11 @@
 namespace MeterReadingsService
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
 	using System.Linq.Expressions;
+	using System.Threading.Tasks;
+	using AutoMapper;
 
 	/// <summary>
 	/// A generic repository.
@@ -20,11 +23,17 @@ namespace MeterReadingsService
         /// <param name="entity">The new item to add.</param>
         TDto Create(TDto dto);
 
-        /// <summary>
-        /// Retrieves all the items.
-        /// </summary>
-        /// <returns>All the items.</returns>
-        IQueryable<TDto> Read();
+		/// <summary>
+		/// Retrieves all the items.
+		/// </summary>
+		/// <returns>All the items.</returns>
+		Task<IEnumerable<TDto>> ReadAsync();
+
+		/// <summary>
+		/// Retrieves all the items.
+		/// </summary>
+		/// <returns>All the items.</returns>
+		Task<IEnumerable<T>> ReadAsync<T>(MapperConfiguration mapperConfig);
 
 		/// <summary>
 		/// Retrieves an item by expression.

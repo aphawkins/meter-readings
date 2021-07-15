@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading.Tasks;
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
@@ -20,7 +21,7 @@
 		}
 
 		[Fact]
-		public void Can_create_meter_reading()
+		public async Task Can_create_meter_reading()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -42,18 +43,18 @@
 			Assert.Equal(new DateTime(2003, 3, 3), reading.MeterReadingDateTime);
 			Assert.Equal(3333, reading.MeterReadingValue);
 
-			Assert.Equal(3, service.MeterReading.Read().Count());
+			Assert.Equal(3, (await service.MeterReading.ReadAsync()).Count());
 		}
 
 		[Fact]
-		public void Can_read_all_meter_readings()
+		public async Task Can_read_all_meter_readings()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			List<MeterReadingDto> readings = service.MeterReading.Read().ToList();
+			List<MeterReadingDto> readings = (await service.MeterReading.ReadAsync()).ToList();
 
 			// Assert
 			Assert.Equal(2, readings.Count);
@@ -109,7 +110,7 @@
 		}
 
 		[Fact]
-		public void Can_delete_meter_reading_by_id()
+		public async Task Can_delete_meter_reading_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -121,11 +122,11 @@
 
 			// Assert
 			Assert.Empty(service.MeterReading.Read(x => x.Id == 1));
-			Assert.Equal(1, service.MeterReading.Read().Count());
+			Assert.Equal(1, (await service.MeterReading.ReadAsync()).Count());
 		}
 
 		[Fact]
-		public void Cant_delete_no_meter_reading_by_id()
+		public async Task Cant_delete_no_meter_reading_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -135,11 +136,11 @@
 			service.MeterReading.Delete(null);
 
 			// Assert
-			Assert.Equal(2, service.MeterReading.Read().Count());
+			Assert.Equal(2, (await service.MeterReading.ReadAsync()).Count());
 		}
 
 		[Fact]
-		public void Can_delete_all_meter_readings()
+		public async Task Can_delete_all_meter_readings()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -149,7 +150,7 @@
 			service.MeterReading.Delete();
 
 			// Assert
-			Assert.Empty(service.MeterReading.Read());
+			Assert.Empty(await service.MeterReading.ReadAsync());
 		}
 	}
 }

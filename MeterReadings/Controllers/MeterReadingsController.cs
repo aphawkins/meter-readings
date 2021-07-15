@@ -4,6 +4,7 @@
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
 	using System.Threading.Tasks;
@@ -20,9 +21,9 @@
 		}
 
 		[HttpGet]
-		public ActionResult<IQueryable<MeterReadingDto>> GetMeterReadings()
+		public async Task<ActionResult<IEnumerable<MeterReadingDto>>> GetMeterReadings()
 		{
-			IQueryable<MeterReadingDto> readings = _service.MeterReading.Read();
+			IEnumerable<MeterReadingDto> readings = await _service.MeterReading.ReadAsync();
 			return Ok(readings);
 		}
 
