@@ -2,6 +2,7 @@
 {
 	using MeterReadingsData.Entities;
 	using Microsoft.EntityFrameworkCore;
+	using System;
 	using System.IO;
 	using System.Reflection;
 
@@ -24,7 +25,7 @@
 					if (int.TryParse(details[0], out int accountId))
 					{
 						context.Accounts.Add(
-							new Account
+							new()
 							{
 								Id = accountId,
 								FirstName = details[1],
@@ -35,6 +36,10 @@
 
 				file.Close();
 			}
+
+			context.MeterReadings.Add(new() { AccountId = 2344, MeterReadingDateTime = new DateTime(2001, 1, 1, 1, 1, 1, 1), MeterReadingValue = 11111 });
+			context.MeterReadings.Add(new() { AccountId = 2233, MeterReadingDateTime = new DateTime(2002, 2, 2, 2, 2, 2, 2), MeterReadingValue = 22222 });
+			context.MeterReadings.Add(new() { AccountId = 8766, MeterReadingDateTime = DateTime.UtcNow, MeterReadingValue = 12345 });
 
 			context.SaveChanges();
 		}

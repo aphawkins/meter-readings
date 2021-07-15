@@ -11,12 +11,12 @@
 		[Display(Name = "Account Id")]
 		public int AccountId { get; set; }
 
-        public AccountViewModel MyAccount { get; set; }
-
 		[Display(Name = "Reading Time")]
+		[DataType(DataType.DateTime)]
 		public DateTime MeterReadingDateTime { get; set; }
 
 		[Display(Name = "Reading Value")]
+		[Range(0, 99999)]
 		public int MeterReadingValue { get; set; }
     }
 }

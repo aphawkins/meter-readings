@@ -13,7 +13,5 @@
 
 		[Display(Name = "Last Name")]
 		public string LastName { get; set; }
-
-        public ICollection<MeterReadingViewModel> MeterReadings { get; set; }
     }
 }
