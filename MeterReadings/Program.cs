@@ -1,5 +1,6 @@
 namespace MeterReadingsApi
 {
+	using System.Reflection;
 	using Microsoft.AspNetCore.Hosting;
 	using Microsoft.Extensions.Hosting;
 
@@ -10,8 +11,13 @@ namespace MeterReadingsApi
 			CreateHostBuilder(args).Build().Run();
 		}
 
-		public static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
-				.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+		public static IHostBuilder CreateHostBuilder(string[] args)
+		{
+			string assemblyName = typeof(Startup).GetTypeInfo().Assembly.FullName;
+
+			return Host
+				.CreateDefaultBuilder(args)
+				.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup(assemblyName));
+		}
 	}
 }

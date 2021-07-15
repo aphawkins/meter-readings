@@ -8,9 +8,9 @@ namespace MeterReadingsApi
 	using Microsoft.Extensions.Hosting;
 	using Microsoft.OpenApi.Models;
 
-	public class Startup
+	public class StartupDevelopment
 	{
-		public Startup(IConfiguration configuration)
+		public StartupDevelopment(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
@@ -20,7 +20,7 @@ namespace MeterReadingsApi
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.ConfigureSqlServerDb(Configuration.GetConnectionString("MeterReadingsDatabase"));
+			services.ConfigureInMemoryDbAndSeed(Configuration.GetConnectionString("MeterReadingsDatabase"));
 			services.ConfigureMeterReadingsService();
 
 			services.AddControllers();

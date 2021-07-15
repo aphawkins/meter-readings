@@ -7,9 +7,9 @@ namespace MeterReadingsMvcApp
 	using Microsoft.Extensions.DependencyInjection;
 	using Microsoft.Extensions.Hosting;
 
-	public class Startup
+	public class StartupDevelopment
     {
-        public Startup(IConfiguration configuration)
+        public StartupDevelopment(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -21,7 +21,7 @@ namespace MeterReadingsMvcApp
         {
 			services.AddControllersWithViews();
 
-			services.ConfigureSqlServerDb(Configuration.GetConnectionString("MeterReadingsDatabase"));
+			services.ConfigureInMemoryDbAndSeed(Configuration.GetConnectionString("MeterReadingsDatabase"));
 			services.ConfigureMeterReadingsService();
 		}
 
