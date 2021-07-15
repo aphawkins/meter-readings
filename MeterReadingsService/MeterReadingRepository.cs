@@ -5,7 +5,7 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using MeterReadingsData;
-	using MeterReadingsData.Models;
+	using MeterReadingsData.Entities;
 	using global::MeterReadingsService.Dto;
 
 	public class MeterReadingRepository : RepositoryBase<MeterReadingDto, MeterReading>, IMeterReadingRepository

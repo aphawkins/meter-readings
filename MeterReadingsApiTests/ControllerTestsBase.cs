@@ -2,7 +2,7 @@ namespace MeterReadingsApiTests
 {
 	using System;
 	using MeterReadingsData;
-	using MeterReadingsData.Models;
+	using MeterReadingsData.Entities;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 

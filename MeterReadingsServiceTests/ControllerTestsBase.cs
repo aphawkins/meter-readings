@@ -2,7 +2,7 @@ namespace MeterReadingsServiceTests
 {
 	using System;
 	using MeterReadingsData;
-	using MeterReadingsData.Models;
+	using MeterReadingsData.Entities;
 	using Microsoft.EntityFrameworkCore;
 
 	public class ControllerTestsBase

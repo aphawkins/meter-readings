@@ -4,6 +4,9 @@
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
 	using System.Linq;
+	using MeterReadingsMvcApp.Models;
+	using AutoMapper.QueryableExtensions;
+	using AutoMapper;
 
 	public class AccountsController : Controller
     {
@@ -17,7 +20,7 @@
         // GET: Accounts
         public IActionResult Index()
         {
-			return View(_service.Account.Read());
+			return View(_service.Account.Read().ProjectTo<AccountViewModel>(MapperConfig.Config));
         }
 
 		// GET: Accounts/Details/5
@@ -28,13 +31,13 @@
 				return NotFound();
 			}
 
-			var account = _service.Account.Read(x => x.Id == id.Value);
+			AccountDto account = _service.Account.Read(x => x.Id == id.Value).FirstOrDefault();
 			if (account == null)
 			{
 				return NotFound();
 			}
 
-			return View(account);
+			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// GET: Accounts/Create
@@ -55,7 +58,7 @@
 				_service.Account.Create(account);
 				return RedirectToAction(nameof(Index));
 			}
-			return View(account);
+			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// GET: Accounts/Edit/5
@@ -71,7 +74,7 @@
 			{
 				return NotFound();
 			}
-			return View(account);
+			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// POST: Accounts/Edit/5
@@ -91,7 +94,7 @@
 				_service.Account.Update(account);
 				return RedirectToAction(nameof(Index));
 			}
-			return View(account);
+			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// GET: Accounts/Delete/5
@@ -108,7 +111,7 @@
 				return NotFound();
 			}
 
-			return View(account);
+			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// POST: Accounts/Delete/5

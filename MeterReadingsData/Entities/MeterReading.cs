@@ -1,14 +1,14 @@
-﻿namespace MeterReadingsMvcApp.ViewModels
+﻿namespace MeterReadingsData.Entities
 {
 	using System;
 
-	public class MeterReadingViewModel
+	public class MeterReading
     {
         public int Id { get; set; }
 
         public int AccountId { get; set; }
 
-        public AccountViewModel MyAccount { get; set; }
+        public Account MyAccount { get; set; }
 
         public DateTime MeterReadingDateTime { get; set; }
 

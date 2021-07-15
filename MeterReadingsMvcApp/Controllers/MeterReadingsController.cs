@@ -1,6 +1,9 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
 	using System.Linq;
+	using AutoMapper;
+	using AutoMapper.QueryableExtensions;
+	using MeterReadingsMvcApp.Models;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,7 @@
         // GET: MeterReadings
         public IActionResult Index()
         {
-			return View(_service.MeterReading.Read());
+			return View(_service.MeterReading.Read().ProjectTo<MeterReadingViewModel>(MapperConfig.Config));
         }
 
 		// GET: MeterReadings/Details/5
@@ -35,7 +38,7 @@
 				return NotFound();
 			}
 
-			return View(meterReading);
+			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Create
@@ -58,7 +61,7 @@
 				return RedirectToAction(nameof(Index));
 			}
 			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
-			return View(meterReading);
+			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Edit/5
@@ -75,7 +78,7 @@
 				return NotFound();
 			}
 			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
-			return View(meterReading);
+			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// POST: MeterReadings/Edit/5
@@ -96,7 +99,7 @@
 				return RedirectToAction(nameof(Index));
 			}
 			ViewData["AccountId"] = new SelectList(_service.Account.Read(), "Id", "Id", meterReading.AccountId);
-			return View(meterReading);
+			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Delete/5
@@ -113,7 +116,7 @@
 				return NotFound();
 			}
 
-			return View(meterReading);
+			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// POST: MeterReadings/Delete/5
