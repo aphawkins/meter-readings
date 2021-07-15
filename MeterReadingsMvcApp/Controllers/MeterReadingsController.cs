@@ -58,7 +58,7 @@
 		{
 			if (ModelState.IsValid)
 			{
-				_service.MeterReading.Create(meterReading);
+				await _service.MeterReading.CreateAsync(meterReading);
 				return RedirectToAction(nameof(Index));
 			}
 			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
@@ -96,7 +96,7 @@
 
 			if (ModelState.IsValid)
 			{
-				_service.MeterReading.Update(meterReading);
+				await _service.MeterReading.UpdateAsync(meterReading);
 				return RedirectToAction(nameof(Index));
 			}
 			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
@@ -126,7 +126,7 @@
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			_service.MeterReading.Delete((await _service.MeterReading.ReadAsync(x => x.Id == id)).FirstOrDefault());
+			await _service.MeterReading.DeleteAsync((await _service.MeterReading.ReadAsync(x => x.Id == id)).FirstOrDefault());
 			return RedirectToAction(nameof(Index));
 		}
 	}

@@ -52,7 +52,7 @@
 		}
 
 		[Fact]
-		public void Can_delete_all_meter_readings()
+		public async Task Can_delete_all_meter_readings()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -60,7 +60,7 @@
 			MeterReadingsController controller = new(service);
 
 			// Act
-			ActionResult<object> actionResult = controller.DeleteMeterReadings();
+			ActionResult<object> actionResult = await controller.DeleteMeterReadings();
 			Assert.IsType<OkObjectResult>(actionResult.Result);
 			object response = GetObjectResultContent(actionResult);
 

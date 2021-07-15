@@ -21,7 +21,7 @@ namespace MeterReadingsService
         /// Adds a new item to the repository.
         /// </summary>
         /// <param name="entity">The new item to add.</param>
-        TDto Create(TDto dto);
+        Task<TDto> CreateAsync(TDto dto);
 
 		/// <summary>
 		/// Retrieves all the items.
@@ -45,16 +45,16 @@ namespace MeterReadingsService
 		/// Updates an item in the repository.
 		/// </summary>
 		/// <param name="entity">The item to update.</param>
-		TDto Update(TDto dto);
+		Task<TDto> UpdateAsync(TDto dto);
 
 		/// <summary>
 		/// Removes all items from the repository.
 		/// </summary>
-		void Delete();
+		Task DeleteAsync();
 
 		/// <summary>
 		/// Removes an entity from the repository.
 		/// </summary>
-		void Delete(TDto dto);
+		Task DeleteAsync(TDto dto);
 	}
 }

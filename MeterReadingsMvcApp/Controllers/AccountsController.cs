@@ -52,11 +52,11 @@
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Create([Bind("Id,FirstName,LastName")] AccountDto account)
+		public async Task<IActionResult> Create([Bind("Id,FirstName,LastName")] AccountDto account)
 		{
 			if (ModelState.IsValid)
 			{
-				_service.Account.Create(account);
+				await _service.Account.CreateAsync(account);
 				return RedirectToAction(nameof(Index));
 			}
 			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
@@ -83,7 +83,7 @@
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult Edit(int id, [Bind("Id,FirstName,LastName")] AccountDto account)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] AccountDto account)
 		{
 			if (id != account.Id)
 			{
@@ -92,7 +92,7 @@
 
 			if (ModelState.IsValid)
 			{
-				_service.Account.Update(account);
+				await _service.Account.UpdateAsync(account);
 				return RedirectToAction(nameof(Index));
 			}
 			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
@@ -121,7 +121,7 @@
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			_service.Account.Delete((await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault());
+			await _service.Account.DeleteAsync((await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault());
 			return RedirectToAction(nameof(Index));
 		}
 	}

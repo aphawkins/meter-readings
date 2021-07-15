@@ -21,6 +21,7 @@
 		}
 
 		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<IEnumerable<MeterReadingDto>>> GetMeterReadings()
 		{
 			IEnumerable<MeterReadingDto> readings = await _service.MeterReading.ReadAsync();
@@ -28,15 +29,23 @@
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteMeterReadings()
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<ActionResult> DeleteMeterReadings()
 		{
-			_service.MeterReading.Delete();
+			await _service.MeterReading.DeleteAsync();
 			return Ok(new { deleted = true });
 		}
 
 		[HttpPost(Name = "PostMeterReadingsCsvFile")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> OnPostUploadAsync(IFormFile file)
 		{
+			if (file == null)
+			{
+				return NotFound();
+			}
+
 			using StreamReader readingsReader = new(file.OpenReadStream());
 
 			(int total, int successful) = await _service.MeterReading.AddMeterReadingsAsync(readingsReader);

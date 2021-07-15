@@ -33,7 +33,7 @@
 			};
 
 			// Act
-			AccountDto account = service.Account.Create(newAccount);
+			AccountDto account = await service.Account.CreateAsync(newAccount);
 
 			// Assert
 			Assert.Equal(3, account.Id);
@@ -89,7 +89,7 @@
 			existing.LastName = "account";
 
 			// Act
-			AccountDto account = service.Account.Update(existing);
+			AccountDto account = await service.Account.UpdateAsync(existing);
 
 			// Assert
 			Assert.Equal(1, account.Id);
@@ -105,7 +105,7 @@
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			service.Account.Delete((await service.Account.ReadAsync(x => x.Id == 2)).FirstOrDefault());
+			await service.Account.DeleteAsync((await service.Account.ReadAsync(x => x.Id == 2)).FirstOrDefault());
 
 			// Assert
 			Assert.Single(await service.Account.ReadAsync());
@@ -119,7 +119,7 @@
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			service.Account.Delete(null);
+			await service.Account.DeleteAsync(null);
 
 			// Assert
 			Assert.Equal(2, (await service.Account.ReadAsync()).Count());
@@ -133,7 +133,7 @@
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			service.Account.Delete();
+			await service.Account.DeleteAsync();
 
 			// Assert
 			Assert.Empty(await service.Account.ReadAsync());

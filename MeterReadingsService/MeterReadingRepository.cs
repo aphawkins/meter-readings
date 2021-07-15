@@ -36,7 +36,7 @@
 					RepositoryContext.Accounts.Any(x => x.Id == accountId) &&
 					!RepositoryContext.MeterReadings.Any(x => x.AccountId == accountId && x.MeterReadingDateTime == readingDT))
 				{
-					MeterReadingDto newReading = Create(new()
+					MeterReadingDto newReading = await CreateAsync(new()
 					{
 						AccountId = accountId,
 						MeterReadingDateTime = readingDT,

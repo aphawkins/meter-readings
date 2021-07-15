@@ -2,6 +2,7 @@
 {
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
+	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -20,6 +21,7 @@
 
 		// GET: api/Accounts
 		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<IEnumerable<AccountDto>>> GetAccounts()
 		{
 			IEnumerable<AccountDto> accounts = await _service.Account.ReadAsync();
@@ -28,6 +30,8 @@
 
 		// GET: api/Accounts/5
 		[HttpGet("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<AccountDto>> GetAccount(int id)
 		{
 			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault();

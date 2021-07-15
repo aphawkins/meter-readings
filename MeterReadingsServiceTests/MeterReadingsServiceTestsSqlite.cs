@@ -35,7 +35,7 @@
 			};
 
 			// Act
-			MeterReadingDto reading = service.MeterReading.Create(newReading);
+			MeterReadingDto reading = await service.MeterReading.CreateAsync(newReading);
 
 			// Assert
 			Assert.Equal(3, reading.Id);
@@ -100,7 +100,7 @@
 			existing.MeterReadingValue = 11111;
 
 			// Act
-			MeterReadingDto reading = service.MeterReading.Update(existing);
+			MeterReadingDto reading = await service.MeterReading.UpdateAsync(existing);
 
 			// Assert
 			Assert.Equal(1, reading.Id);
@@ -118,7 +118,7 @@
 			MeterReadingDto reading = (await service.MeterReading.ReadAsync(x => x.Id == 1)).FirstOrDefault();
 
 			// Act
-			service.MeterReading.Delete(reading);
+			await service.MeterReading.DeleteAsync(reading);
 
 			// Assert
 			Assert.Empty(await service.MeterReading.ReadAsync(x => x.Id == 1));
@@ -133,7 +133,7 @@
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			service.MeterReading.Delete(null);
+			await service.MeterReading.DeleteAsync(null);
 
 			// Assert
 			Assert.Equal(2, (await service.MeterReading.ReadAsync()).Count());
@@ -147,7 +147,7 @@
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			service.MeterReading.Delete();
+			await service.MeterReading.DeleteAsync();
 
 			// Assert
 			Assert.Empty(await service.MeterReading.ReadAsync());

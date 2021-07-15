@@ -31,32 +31,32 @@
 			return await RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config).Where(expression).ToListAsync();
 		}
 
-		public TDto Create(TDto dto)
+		public async Task<TDto> CreateAsync(TDto dto)
 		{
 			Mapper mapper = new(MapperConfig.Config);
 			TDto newDto = mapper.Map<TDto>(RepositoryContext.Set<TEntity>().Add(mapper.Map<TEntity>(dto)).Entity);
-			RepositoryContext.SaveChanges();
+			await RepositoryContext.SaveChangesAsync();
 			return newDto;
 		}
 
-		public TDto Update(TDto dto)
+		public async Task<TDto> UpdateAsync(TDto dto)
 		{
 			Mapper mapper = new(MapperConfig.Config);
 			TDto updated = mapper.Map<TDto>(RepositoryContext.Set<TEntity>().Update(mapper.Map<TEntity>(dto)).Entity);
-			RepositoryContext.SaveChanges();
+			await RepositoryContext.SaveChangesAsync();
 			return updated;
 		}
 
-		public void Delete()
+		public async Task DeleteAsync()
 		{
 			foreach (TEntity entity in RepositoryContext.Set<TEntity>())
 			{
 				RepositoryContext.Remove(entity);
 			}
-			RepositoryContext.SaveChanges();
+			await RepositoryContext.SaveChangesAsync();
 		}
 
-		public void Delete(TDto dto)
+		public async Task DeleteAsync(TDto dto)
 		{
 			if (dto == null)
 			{
@@ -65,7 +65,7 @@
 
 			Mapper mapper = new(MapperConfig.Config);
 			RepositoryContext.Set<TEntity>().Remove(mapper.Map<TEntity>(dto));
-			RepositoryContext.SaveChanges();
+			await RepositoryContext.SaveChangesAsync();
 		}
 	}
 }
