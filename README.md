@@ -1,12 +1,5 @@
-# Meter Readings Exercise
+# Meter Readings
 
-## User Story
-As an Energy Company Account Manager, I want to be able to load a CSV file of Customer Meter Readings So that we can monitor their energy consumption and charge them accordingly.
+A test project to improve knowledge of ASP.NET Core and Entity Framework Core.
 
-## Improvements that could be made
-- Add Unit Tests
-- Better error handling in most places
-- Improve status codes
-- Connection string in config
-- More efficient use of adding with referential integrity
-- Add an Update/PUT for meter readings
+The project manages energy meter readings by user account and meter reading value at a specified time.
