@@ -71,14 +71,14 @@
 		}
 
 		[Fact]
-		public void Can_read_meter_reading_by_id()
+		public async Task Can_read_meter_reading_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			List<MeterReadingDto> readings = service.MeterReading.Read(e => e.Id == 1).ToList();
+			List<MeterReadingDto> readings = (await service.MeterReading.ReadAsync(e => e.Id == 1)).ToList();
 
 			// Assert
 			Assert.Single(readings);
@@ -90,12 +90,12 @@
 
 
 		[Fact]
-		public void Can_update_meter_reading()
+		public async Task Can_update_meter_reading()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
-			MeterReadingDto existing = service.MeterReading.Read(x => x.Id == 1).FirstOrDefault();
+			MeterReadingDto existing = (await service.MeterReading.ReadAsync(x => x.Id == 1)).FirstOrDefault();
 			existing.MeterReadingDateTime = new DateTime(2011, 11, 11);
 			existing.MeterReadingValue = 11111;
 
@@ -115,14 +115,14 @@
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
-			MeterReadingDto reading = service.MeterReading.Read(x => x.Id == 1).FirstOrDefault();
+			MeterReadingDto reading = (await service.MeterReading.ReadAsync(x => x.Id == 1)).FirstOrDefault();
 
 			// Act
 			service.MeterReading.Delete(reading);
 
 			// Assert
-			Assert.Empty(service.MeterReading.Read(x => x.Id == 1));
-			Assert.Equal(1, (await service.MeterReading.ReadAsync()).Count());
+			Assert.Empty(await service.MeterReading.ReadAsync(x => x.Id == 1));
+			Assert.Single(await service.MeterReading.ReadAsync());
 		}
 
 		[Fact]

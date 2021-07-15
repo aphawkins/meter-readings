@@ -23,12 +23,12 @@
 
 		public async Task<IEnumerable<T>> ReadAsync<T>(MapperConfiguration mapperConfig)
 		{
-			return await RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<T>(mapperConfig).ToListAsync();
+			return await RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config).ProjectTo<T>(mapperConfig).ToListAsync();
 		}
 		
-		public IQueryable<TDto> Read(Expression<Func<TDto, bool>> expression)
+		public async Task<IEnumerable<TDto>> ReadAsync(Expression<Func<TDto, bool>> expression)
 		{
-			return RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config).Where(expression);
+			return await RepositoryContext.Set<TEntity>().AsNoTracking().ProjectTo<TDto>(MapperConfig.Config).Where(expression).ToListAsync();
 		}
 
 		public TDto Create(TDto dto)

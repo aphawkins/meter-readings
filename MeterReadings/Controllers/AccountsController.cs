@@ -28,9 +28,9 @@
 
 		// GET: api/Accounts/5
 		[HttpGet("{id}")]
-		public ActionResult<AccountDto> GetAccount(int id)
+		public async Task<ActionResult<AccountDto>> GetAccount(int id)
 		{
-			AccountDto account = _service.Account.Read(x => x.Id == id).FirstOrDefault();
+			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault();
 			if (account == null)
 			{
 				return NotFound();

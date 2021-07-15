@@ -25,14 +25,14 @@
         }
 
 		// GET: Accounts/Details/5
-		public IActionResult Details(int? id)
+		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			AccountDto account = _service.Account.Read(x => x.Id == id.Value).FirstOrDefault();
+			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id.Value)).FirstOrDefault();
 			if (account == null)
 			{
 				return NotFound();
@@ -63,14 +63,14 @@
 		}
 
 		// GET: Accounts/Edit/5
-		public IActionResult Edit(int? id)
+		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			AccountDto account = _service.Account.Read(x => x.Id == id.Value).FirstOrDefault();
+			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id.Value)).FirstOrDefault();
 			if (account == null)
 			{
 				return NotFound();
@@ -99,14 +99,14 @@
 		}
 
 		// GET: Accounts/Delete/5
-		public IActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			AccountDto account = _service.Account.Read(x => x.Id == id.Value).FirstOrDefault();
+			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id.Value)).FirstOrDefault();
 			if (account == null)
 			{
 				return NotFound();
@@ -119,9 +119,9 @@
 		[HttpPost]
 		[ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public IActionResult DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			_service.Account.Delete(_service.Account.Read(x => x.Id == id).FirstOrDefault());
+			_service.Account.Delete((await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault());
 			return RedirectToAction(nameof(Index));
 		}
 	}

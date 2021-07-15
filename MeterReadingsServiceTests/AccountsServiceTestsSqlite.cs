@@ -64,14 +64,14 @@
 		}
 
 		[Fact]
-		public void Can_read_account_by_id()
+		public async Task Can_read_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			AccountDto account = service.Account.Read(x => x.Id == 1).FirstOrDefault();
+			AccountDto account = (await service.Account.ReadAsync(x => x.Id == 1)).FirstOrDefault();
 
 			Assert.Equal(1, account.Id);
 			Assert.Equal("One", account.FirstName);
@@ -79,12 +79,12 @@
 		}
 
 		[Fact]
-		public void Can_update_account()
+		public async Task Can_update_account()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
 			IMeterReadingsService service = new MeterReadingsService(context);
-			AccountDto existing = service.Account.Read(x => x.Id == 1).FirstOrDefault();
+			AccountDto existing = (await service.Account.ReadAsync(x => x.Id == 1)).FirstOrDefault();
 			existing.FirstName = "updated";
 			existing.LastName = "account";
 
@@ -105,10 +105,10 @@
 			IMeterReadingsService service = new MeterReadingsService(context);
 
 			// Act
-			service.Account.Delete(service.Account.Read(x => x.Id == 2).FirstOrDefault());
+			service.Account.Delete((await service.Account.ReadAsync(x => x.Id == 2)).FirstOrDefault());
 
 			// Assert
-			Assert.Equal(1, (await service.Account.ReadAsync()).Count());
+			Assert.Single(await service.Account.ReadAsync());
 		}
 
 		[Fact]

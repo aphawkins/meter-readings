@@ -39,7 +39,7 @@ namespace MeterReadingsService
 		/// Retrieves an item by expression.
 		/// </summary>
 		/// <returns>The item by expression.</returns>
-		IQueryable<TDto> Read(Expression<Func<TDto, bool>> expression);
+		Task<IEnumerable<TDto>> ReadAsync(Expression<Func<TDto, bool>> expression);
 
 		/// <summary>
 		/// Updates an item in the repository.

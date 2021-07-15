@@ -26,14 +26,14 @@
         }
 
 		// GET: MeterReadings/Details/5
-		public IActionResult Details(int? id)
+		public async Task<IActionResult> Details(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			MeterReadingDto meterReading = _service.MeterReading.Read(x => x.Id == id.Value).FirstOrDefault();
+			MeterReadingDto meterReading = (await _service.MeterReading.ReadAsync(x => x.Id == id.Value)).FirstOrDefault();
 			if (meterReading == null)
 			{
 				return NotFound();
@@ -73,7 +73,7 @@
 				return NotFound();
 			}
 
-			MeterReadingDto meterReading = _service.MeterReading.Read(x => x.Id == id.Value).FirstOrDefault();
+			MeterReadingDto meterReading = (await _service.MeterReading.ReadAsync(x => x.Id == id.Value)).FirstOrDefault();
 			if (meterReading == null)
 			{
 				return NotFound();
@@ -104,14 +104,14 @@
 		}
 
 		// GET: MeterReadings/Delete/5
-		public IActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 
-			MeterReadingDto meterReading = _service.MeterReading.Read(x => x.Id == id.Value).FirstOrDefault();
+			MeterReadingDto meterReading = (await _service.MeterReading.ReadAsync(x => x.Id == id.Value)).FirstOrDefault();
 			if (meterReading == null)
 			{
 				return NotFound();
@@ -124,9 +124,9 @@
 		[HttpPost]
 		[ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public IActionResult DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			_service.MeterReading.Delete(_service.MeterReading.Read(x => x.Id == id).FirstOrDefault());
+			_service.MeterReading.Delete((await _service.MeterReading.ReadAsync(x => x.Id == id)).FirstOrDefault());
 			return RedirectToAction(nameof(Index));
 		}
 	}
