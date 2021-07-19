@@ -1,14 +1,13 @@
 ﻿@model MeterReadingsModels.MeterReadingViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Meter Reading Details";
 }
 
-<h1>Details</h1>
+<h1>@ViewData["Title"]</h1>
+<hr />
 
 <div>
-    <h4>Meter Reading</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AccountId)
