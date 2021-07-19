@@ -2,7 +2,7 @@
 {
 	using MeterReadingsData;
 	using MeterReadingsData.Entities;
-	using global::MeterReadingsService.Dto;
+	using MeterReadingsDto;
 
 	public class AccountRepository : RepositoryBase<AccountDto, Account>, IAccountRepository
 	{

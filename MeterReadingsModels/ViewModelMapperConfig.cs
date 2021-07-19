@@ -1,7 +1,7 @@
 ﻿namespace MeterReadingsMvcApp
 {
 	using AutoMapper;
-	using MeterReadingsService.Dto;
+	using MeterReadingsDto;
 	using MeterReadingsModels;
 
 	public static class ViewModelMapperConfig

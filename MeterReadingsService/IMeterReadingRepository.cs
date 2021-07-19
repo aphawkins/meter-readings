@@ -2,7 +2,7 @@
 {
 	using System.IO;
 	using System.Threading.Tasks;
-	using global::MeterReadingsService.Dto;
+	using MeterReadingsDto;
 
 	public interface IMeterReadingRepository : IRepository<MeterReadingDto>
 	{

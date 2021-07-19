@@ -3,9 +3,9 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using AutoMapper;
+	using MeterReadingsDto;
 	using MeterReadingsModels;
 	using MeterReadingsService;
-	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
 
 	public class AccountsController : Controller

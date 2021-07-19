@@ -25,6 +25,11 @@ namespace MeterReadingsApi
 
 			services.AddControllers();
 			services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MeterReadings", Version = "v1" }));
+
+			services.AddCors(options => options.AddDefaultPolicy(builder =>
+				builder.WithOrigins("https://localhost:44315")
+					   .AllowAnyMethod()
+					   .AllowAnyHeader()));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,7 +43,7 @@ namespace MeterReadingsApi
 			}
 
 			app.UseRouting();
-
+			app.UseCors();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints => endpoints.MapControllers());

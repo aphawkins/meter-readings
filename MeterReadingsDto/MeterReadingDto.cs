@@ -1,4 +1,4 @@
-﻿namespace MeterReadingsService.Dto
+﻿namespace MeterReadingsDto
 {
 	using System;
 	using System.ComponentModel.DataAnnotations;

@@ -5,8 +5,8 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using MeterReadingsData;
+	using MeterReadingsDto;
 	using MeterReadingsService;
-	using MeterReadingsService.Dto;
 	using MeterReadingsTestLibrary;
 	using Microsoft.EntityFrameworkCore;
 	using Xunit;

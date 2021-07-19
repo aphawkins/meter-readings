@@ -6,8 +6,8 @@
 	using System.Threading.Tasks;
 	using MeterReadingsApi.Controllers;
 	using MeterReadingsData;
+	using MeterReadingsDto;
 	using MeterReadingsService;
-	using MeterReadingsService.Dto;
 	using MeterReadingsTestLibrary;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;

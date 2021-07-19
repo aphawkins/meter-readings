@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeterReadingsData\MeterReadingsData.csproj" />
+    <ProjectReference Include="..\MeterReadingsDto\MeterReadingsDto.csproj" />
   </ItemGroup>
 
 </Project>

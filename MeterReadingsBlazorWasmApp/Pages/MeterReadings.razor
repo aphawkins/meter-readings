@@ -1,0 +1,42 @@
+﻿@page "/meterreadings"
+@inject HttpClient Http
+
+<h1>Meter Readings</h1>
+
+@if (readings == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Account Id</th>
+                <th>Meter Reading Id</th>
+                <th>Reading Time</th>
+                <th>Reading Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (MeterReadingDto reading in readings)
+            {
+            <tr>
+                <td>@reading.AccountId</td>
+                <td>@reading.Id</td>
+                <td>@reading.MeterReadingDateTime</td>
+                <td>@reading.MeterReadingValue</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private MeterReadingDto[] readings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        readings = await Http.GetFromJsonAsync<MeterReadingDto[]>("http://localhost:41943/api/MeterReadings");
+    }
+}

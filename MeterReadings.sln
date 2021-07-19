@@ -24,11 +24,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsServiceTests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsModels", "MeterReadingsModels\MeterReadingsModels.csproj", "{CCE3FBF3-A899-4D3E-B104-649D53B46AFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeterReadingsTestLibrary", "MeterReadingsTestLibrary\MeterReadingsTestLibrary.csproj", "{6D58A326-7BF0-4585-8CD7-94B66D756C43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsTestLibrary", "MeterReadingsTestLibrary\MeterReadingsTestLibrary.csproj", "{6D58A326-7BF0-4585-8CD7-94B66D756C43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeterReadingsApiClient", "MeterReadingsApiClient\MeterReadingsApiClient.csproj", "{04CAC952-5FFD-4991-84CC-5B29DD538429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsBlazorWasmApp", "MeterReadingsBlazorWasmApp\MeterReadingsBlazorWasmApp.csproj", "{9D09DD20-4523-497F-A8D0-0B298FCE2580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeterReadingsApiClientTests", "MeterReadingsApiClientTests\MeterReadingsApiClientTests.csproj", "{769E0162-220E-4AD7-999A-400C51DD9DFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsDto", "MeterReadingsDto\MeterReadingsDto.csproj", "{E7E4479A-9385-4F60-B81E-E5B2CBC94EFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,14 +68,14 @@ Global
 		{6D58A326-7BF0-4585-8CD7-94B66D756C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D58A326-7BF0-4585-8CD7-94B66D756C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D58A326-7BF0-4585-8CD7-94B66D756C43}.Release|Any CPU.Build.0 = Release|Any CPU
-		{04CAC952-5FFD-4991-84CC-5B29DD538429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{04CAC952-5FFD-4991-84CC-5B29DD538429}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{04CAC952-5FFD-4991-84CC-5B29DD538429}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{04CAC952-5FFD-4991-84CC-5B29DD538429}.Release|Any CPU.Build.0 = Release|Any CPU
-		{769E0162-220E-4AD7-999A-400C51DD9DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{769E0162-220E-4AD7-999A-400C51DD9DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{769E0162-220E-4AD7-999A-400C51DD9DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{769E0162-220E-4AD7-999A-400C51DD9DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D09DD20-4523-497F-A8D0-0B298FCE2580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D09DD20-4523-497F-A8D0-0B298FCE2580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D09DD20-4523-497F-A8D0-0B298FCE2580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D09DD20-4523-497F-A8D0-0B298FCE2580}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7E4479A-9385-4F60-B81E-E5B2CBC94EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E4479A-9385-4F60-B81E-E5B2CBC94EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E4479A-9385-4F60-B81E-E5B2CBC94EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E4479A-9385-4F60-B81E-E5B2CBC94EFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

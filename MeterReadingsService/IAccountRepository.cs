@@ -1,6 +1,6 @@
 ﻿namespace MeterReadingsService
 {
-	using global::MeterReadingsService.Dto;
+	using MeterReadingsDto;
 
 	public interface IAccountRepository : IRepository<AccountDto>
 	{

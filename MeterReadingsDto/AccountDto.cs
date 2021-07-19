@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MeterReadingsService.Dto
+﻿namespace MeterReadingsDto
 {
+	using System.ComponentModel.DataAnnotations;
+
 	public class AccountDto
 	{
 		[Required]
