@@ -23,6 +23,51 @@
 		}
 
 		[Fact]
+		public async Task Can_create_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+			AccountDto newAccount = new()
+			{
+				Id = 3,
+				FirstName = "Three",
+				LastName = "Third",
+			};
+
+			// Act
+			ActionResult<AccountDto> actionResult = await controller.CreateAccount(newAccount);
+			Assert.IsType<OkObjectResult>(actionResult.Result);
+			AccountDto account = GetObjectResultContent(actionResult);
+
+			// Assert
+			Assert.Equal(3, GetObjectResultContent(await controller.GetAccounts()).Count());
+			Assert.Equal(3, account.Id);
+			Assert.Equal("Three", account.FirstName);
+			Assert.Equal("Third", account.LastName);
+		}
+
+		[Fact]
+		public async Task Cant_create_duplicate_account_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+			AccountDto newAccount = new()
+			{
+				Id = 2,
+				FirstName = "Two",
+				LastName = "Second",
+			};
+
+			// Act & Assert
+			ActionResult<AccountDto> actionResult = await controller.CreateAccount(newAccount);
+			Assert.IsType<ConflictResult>(actionResult.Result);
+		}
+
+		[Fact]
 		public async Task Can_get_accounts()
 		{
 			// Arrange
@@ -58,9 +103,22 @@
 			Assert.IsType<OkObjectResult>(actionResult.Result);
 			AccountDto account = GetObjectResultContent(actionResult);
 
-
+			// Assert
 			Assert.Equal(1, account.Id);
 			Assert.Equal("One", account.FirstName);
+		}
+
+		[Fact]
+		public void Cant_get_account_by_no_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+
+			// Act & Assert
+			ActionResult<AccountDto> actionResult = controller.GetAccount(3).Result;
+			Assert.IsType<NotFoundResult>(actionResult.Result);
 		}
 	}
 }

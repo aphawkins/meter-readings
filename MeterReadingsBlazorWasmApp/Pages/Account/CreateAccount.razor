@@ -1,0 +1,39 @@
+﻿@page "/accounts/create"
+@inject HttpClient Http
+
+<h1>Create Account</h1>
+<hr />
+
+<EditForm Model="@accountModel" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>Account Id</p>
+    <p>
+        <InputNumber id="accountId" @bind-Value="accountModel.Id" />
+    </p>
+    <p>First Name</p>
+    <p>
+        <InputText id="firstname" @bind-Value="accountModel.FirstName" />
+    </p>
+    <p>Last Name</p>
+    <p>
+        <InputText id="lastname" @bind-Value="accountModel.LastName" />
+    </p>
+    <p>
+        <button type="submit">Create</button>
+    </p>
+</EditForm>
+<p>
+    <NavLink href="/accounts">Back to Accounts</NavLink>
+</p>
+
+@code {
+    private AccountViewModel accountModel = new();
+
+    private async Task HandleValidSubmit()
+    {
+        AccountDto accountDto = new Mapper(ViewModelMapperConfig.Config).Map<AccountDto>(accountModel);
+        var response = await Http.PostAsJsonAsync<AccountDto>("http://localhost:41943/api/accounts", accountDto);
+    }
+}

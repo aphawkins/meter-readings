@@ -29,19 +29,35 @@
 			AccountDto newAccount = new()
 			{
 				Id = 3,
-				FirstName = "new",
-				LastName = "account",
+				FirstName = "Three",
+				LastName = "Third",
 			};
 
 			// Act
 			AccountDto account = await service.Account.CreateAsync(newAccount);
 
 			// Assert
-			Assert.Equal(3, account.Id);
-			Assert.Equal("new", account.FirstName);
-			Assert.Equal("account", account.LastName);
-
 			Assert.Equal(3, (await service.Account.ReadAsync()).Count());
+			Assert.Equal(3, account.Id);
+			Assert.Equal("Three", account.FirstName);
+			Assert.Equal("Third", account.LastName);
+		}
+
+		[Fact]
+		public async Task Cant_create_duplicate_account_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountDto newAccount = new()
+			{
+				Id = 2,
+				FirstName = "Two",
+				LastName = "Second",
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<MeterReadingsServiceException>(() => service.Account.CreateAsync(newAccount));
 		}
 
 		[Fact]
@@ -59,9 +75,11 @@
 
 			Assert.Equal(1, accounts[0].Id);
 			Assert.Equal("One", accounts[0].FirstName);
+			Assert.Equal("First", accounts[0].LastName);
 
 			Assert.Equal(2, accounts[1].Id);
 			Assert.Equal("Two", accounts[1].FirstName);
+			Assert.Equal("Second", accounts[1].LastName);
 		}
 
 		[Fact]

@@ -8,7 +8,7 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 
-	[Route("api/[controller]")]
+	[Route("api/accounts")]
 	[ApiController]
 	public class AccountsController : ControllerBase
 	{
@@ -19,7 +19,7 @@
 			_service = service;
 		}
 
-		// GET: api/Accounts
+		// GET: api/accounts
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<IEnumerable<AccountDto>>> GetAccounts()
@@ -28,7 +28,7 @@
 			return Ok(accounts);
 		}
 
-		// GET: api/Accounts/5
+		// GET: api/accounts/5
 		[HttpGet("{id:int}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -41,6 +41,25 @@
 			}
 
 			return Ok(account);
+		}
+
+		// POST: api/accounts
+		[HttpPost]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status409Conflict)]
+		public async Task<ActionResult<AccountDto>> CreateAccount([FromBody] AccountDto accountDto)
+		{
+			AccountDto newAccount;
+
+			try
+			{
+				newAccount = await _service.Account.CreateAsync(accountDto);
+			}
+			catch (MeterReadingsServiceException)
+			{
+				return Conflict();
+			}
+			return Ok(newAccount);
 		}
 	}
 }

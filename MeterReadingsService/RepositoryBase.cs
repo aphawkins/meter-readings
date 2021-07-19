@@ -35,7 +35,16 @@
 		{
 			Mapper mapper = new(DtoMapperConfig.Config);
 			TDto newDto = mapper.Map<TDto>(RepositoryContext.Set<TEntity>().Add(mapper.Map<TEntity>(dto)).Entity);
-			await RepositoryContext.SaveChangesAsync();
+
+			try
+			{
+				await RepositoryContext.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				throw new MeterReadingsServiceException("Error creating entity.", ex);
+			}
+
 			return newDto;
 		}
 
