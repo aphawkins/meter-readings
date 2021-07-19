@@ -1,8 +1,5 @@
 ﻿namespace MeterReadingsApi.Controllers
 {
-	using AutoMapper;
-	using MeterReadingsModels;
-	using MeterReadingsMvcApp;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Http;

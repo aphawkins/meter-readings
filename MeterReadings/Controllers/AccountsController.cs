@@ -29,7 +29,7 @@
 		}
 
 		// GET: api/Accounts/5
-		[HttpGet("{id}")]
+		[HttpGet("{id:int}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<AccountDto>> GetAccount(int id)

@@ -70,7 +70,8 @@
 			};
 
 			// Act & Assert
-			await Assert.ThrowsAsync<DbUpdateException>(() => controller.CreateMeterReading(newReading));
+			ActionResult<MeterReadingDto> actionResult = await controller.CreateMeterReading(newReading);
+			Assert.IsType<BadRequestResult>(actionResult.Result);
 		}
 
 		[Fact]
@@ -89,7 +90,8 @@
 			};
 
 			// Act & Assert
-			await Assert.ThrowsAsync<DbUpdateException>(() => controller.CreateMeterReading(newReading));
+			ActionResult<MeterReadingDto> actionResult = await controller.CreateMeterReading(newReading);
+			Assert.IsType<BadRequestResult>(actionResult.Result);
 		}
 
 		[Fact]
