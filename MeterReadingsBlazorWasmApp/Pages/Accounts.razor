@@ -37,7 +37,6 @@ else
     {
         try
         {
-            // string s = await Http.GetStringAsync("http://localhost:41943/api/Accounts");
             accounts = await Http.GetFromJsonAsync<AccountDto[]>("http://localhost:41943/api/Accounts");
         }
         catch (Exception ex)
