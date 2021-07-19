@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MeterReadingsData\MeterReadingsData.csproj" />
+    <ProjectReference Include="..\MeterReadingsTestLibrary\MeterReadingsTestLibrary.csproj" />
     <ProjectReference Include="..\MeterReadings\MeterReadingsApi.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,5 @@
 ﻿namespace MeterReadingsData
 {
-	using MeterReadingsData.Entities;
 	using Microsoft.EntityFrameworkCore;
 	using System;
 	using System.IO;

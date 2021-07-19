@@ -7,6 +7,7 @@
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
+	using MeterReadingsTestLibrary;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 	using Xunit;

@@ -2,11 +2,11 @@
 {
 	using AutoMapper;
 	using MeterReadingsService.Dto;
-	using MeterReadingsMvcApp.Models;
+	using MeterReadingsModels;
 
-	internal static class MapperConfig
+	public static class ViewModelMapperConfig
 	{
-		internal readonly static MapperConfiguration Config = new(cfg => 
+		public readonly static MapperConfiguration Config = new(cfg => 
 		{ 
 			cfg.CreateMap<AccountViewModel, AccountDto>(); 
 			cfg.CreateMap<AccountDto, AccountViewModel>();

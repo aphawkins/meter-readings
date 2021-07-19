@@ -17,6 +17,14 @@
 				.WithOne(m => m.MyAccount)
 				.HasForeignKey(m => m.AccountId)
 				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Account>()
+				.Property(e => e.Id)
+				.ValueGeneratedOnAdd();
+
+			modelBuilder.Entity<MeterReading>()
+				.Property(e => e.Id)
+				.ValueGeneratedOnAdd();
 		}
 
 		public DbSet<Account> Accounts { get; set; }

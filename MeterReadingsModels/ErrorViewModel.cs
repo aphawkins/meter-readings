@@ -1,4 +1,4 @@
-namespace MeterReadingsMvcApp.Models
+namespace MeterReadingsModels
 {
 	public class ErrorViewModel
     {

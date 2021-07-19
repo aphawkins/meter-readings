@@ -1,13 +1,12 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
-	using Microsoft.AspNetCore.Mvc;
+	using System.Linq;
+	using System.Threading.Tasks;
+	using AutoMapper;
+	using MeterReadingsModels;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
-	using System.Linq;
-	using MeterReadingsMvcApp.Models;
-	using AutoMapper.QueryableExtensions;
-	using AutoMapper;
-	using System.Threading.Tasks;
+	using Microsoft.AspNetCore.Mvc;
 
 	public class AccountsController : Controller
     {
@@ -21,7 +20,7 @@
         // GET: Accounts
         public async Task<IActionResult> Index()
         {
-			return View(await _service.Account.ReadAsync<AccountViewModel>(MapperConfig.Config));
+			return View(await _service.Account.ReadAsync<AccountViewModel>(ViewModelMapperConfig.Config));
         }
 
 		// GET: Accounts/Details/5
@@ -38,7 +37,7 @@
 				return NotFound();
 			}
 
-			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// GET: Accounts/Create
@@ -59,7 +58,7 @@
 				await _service.Account.CreateAsync(account);
 				return RedirectToAction(nameof(Index));
 			}
-			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// GET: Accounts/Edit/5
@@ -75,7 +74,7 @@
 			{
 				return NotFound();
 			}
-			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// POST: Accounts/Edit/5
@@ -95,7 +94,7 @@
 				await _service.Account.UpdateAsync(account);
 				return RedirectToAction(nameof(Index));
 			}
-			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// GET: Accounts/Delete/5
@@ -112,7 +111,7 @@
 				return NotFound();
 			}
 
-			return View(new Mapper(MapperConfig.Config).Map<AccountViewModel>(account));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(account));
 		}
 
 		// POST: Accounts/Delete/5

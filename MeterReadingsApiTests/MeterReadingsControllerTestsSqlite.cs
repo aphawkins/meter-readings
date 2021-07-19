@@ -8,6 +8,7 @@
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
+	using MeterReadingsTestLibrary;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 	using Newtonsoft.Json;
@@ -22,6 +23,73 @@
 					.UseSqlite($"Filename={nameof(MeterReadingsControllerTestsSqlite)}.db")
 					.Options)
 		{
+		}
+
+		[Fact]
+		public async Task Can_create_meter_reading()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingsController controller = new(service);
+			MeterReadingDto newReading = new()
+			{
+				Id = 3,
+				AccountId = 1,
+				MeterReadingDateTime = new DateTime(2003, 3, 3),
+				MeterReadingValue = 3333
+			};
+
+			// Act
+			ActionResult<MeterReadingDto> actionResult = await controller.CreateMeterReading(newReading);
+			Assert.IsType<OkObjectResult>(actionResult.Result);
+			MeterReadingDto reading = GetObjectResultContent(actionResult);
+
+			// Assert
+			Assert.Equal(3, GetObjectResultContent(await controller.GetMeterReadings()).Count());
+
+			Assert.Equal(3, reading.Id);
+			Assert.Equal(1, reading.AccountId);
+			Assert.Equal(new DateTime(2003, 3, 3), reading.MeterReadingDateTime);
+			Assert.Equal(3333, reading.MeterReadingValue);
+		}
+
+		[Fact]
+		public async Task Cant_create_meter_reading_with_no_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingsController controller = new(service);
+			MeterReadingDto newReading = new()
+			{
+				Id = 3,
+				AccountId = 999,
+				MeterReadingDateTime = new DateTime(2003, 3, 3),
+				MeterReadingValue = 3333
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<DbUpdateException>(() => controller.CreateMeterReading(newReading));
+		}
+
+		[Fact]
+		public async Task Cant_create_meter_reading_with_duplicate_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingsController controller = new(service);
+			MeterReadingDto newReading = new()
+			{
+				Id = 1,
+				AccountId = 1,
+				MeterReadingDateTime = new DateTime(2003, 3, 3),
+				MeterReadingValue = 3333
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<DbUpdateException>(() => controller.CreateMeterReading(newReading));
 		}
 
 		[Fact]

@@ -6,6 +6,7 @@
 	using MeterReadingsData;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
+	using MeterReadingsTestLibrary;
 	using Microsoft.EntityFrameworkCore;
 	using Xunit;
 

@@ -1,10 +1,12 @@
 ﻿namespace MeterReadingsData.Entities
 {
 	using System;
+	using System.ComponentModel.DataAnnotations.Schema;
 
 	public class MeterReading
     {
-        public int Id { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.None)]
+		public int Id { get; set; }
 
         public int AccountId { get; set; }
 

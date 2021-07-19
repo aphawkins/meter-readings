@@ -1,7 +1,7 @@
 ﻿namespace MeterReadingsMvcApp.Controllers
 {
 	using System.Diagnostics;
-	using MeterReadingsMvcApp.Models;
+	using MeterReadingsModels;
 	using Microsoft.AspNetCore.Mvc;
 
 	public class HomeController : Controller

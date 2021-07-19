@@ -4,9 +4,9 @@
 	using global::MeterReadingsService.Dto;
 	using MeterReadingsData.Entities;
 
-	internal static class MapperConfig
+	public static class DtoMapperConfig
 	{
-		internal readonly static MapperConfiguration Config = new(cfg => 
+		public readonly static MapperConfiguration Config = new(cfg => 
 		{ 
 			cfg.CreateMap<Account, AccountDto>(); 
 			cfg.CreateMap<AccountDto, Account>();

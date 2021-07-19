@@ -3,8 +3,7 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using AutoMapper;
-	using AutoMapper.QueryableExtensions;
-	using MeterReadingsMvcApp.Models;
+	using MeterReadingsModels;
 	using MeterReadingsService;
 	using MeterReadingsService.Dto;
 	using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,7 @@
         // GET: MeterReadings
         public async Task<IActionResult> Index()
         {
-			return View(await _service.MeterReading.ReadAsync<MeterReadingViewModel>(MapperConfig.Config));
+			return View(await _service.MeterReading.ReadAsync<MeterReadingViewModel>(ViewModelMapperConfig.Config));
         }
 
 		// GET: MeterReadings/Details/5
@@ -39,7 +38,7 @@
 				return NotFound();
 			}
 
-			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Create
@@ -62,7 +61,7 @@
 				return RedirectToAction(nameof(Index));
 			}
 			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
-			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Edit/5
@@ -79,7 +78,7 @@
 				return NotFound();
 			}
 			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
-			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// POST: MeterReadings/Edit/5
@@ -100,7 +99,7 @@
 				return RedirectToAction(nameof(Index));
 			}
 			ViewData["AccountId"] = new SelectList(await _service.Account.ReadAsync(), "Id", "Id", meterReading.AccountId);
-			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// GET: MeterReadings/Delete/5
@@ -117,7 +116,7 @@
 				return NotFound();
 			}
 
-			return View(new Mapper(MapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
+			return View(new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(meterReading));
 		}
 
 		// POST: MeterReadings/Delete/5
