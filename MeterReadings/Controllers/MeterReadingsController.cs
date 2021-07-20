@@ -9,7 +9,7 @@
 	using System.Threading.Tasks;
 
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("api/meterreadings")]
 	public class MeterReadingsController : ControllerBase
 	{
 		private readonly IMeterReadingsService _service;

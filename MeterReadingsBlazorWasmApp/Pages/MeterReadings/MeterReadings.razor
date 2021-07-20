@@ -9,6 +9,10 @@
 }
 else
 {
+    <p>
+        <NavLink href="/meterreadings/create">Create Meter Reading</NavLink>
+    </p>
+
     <table class="table">
         <thead>
             <tr>
@@ -16,17 +20,20 @@ else
                 <th>Meter Reading Id</th>
                 <th>Reading Time</th>
                 <th>Reading Value</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             @foreach (MeterReadingDto reading in readings)
             {
-            <tr>
-                <td>@reading.AccountId</td>
-                <td>@reading.Id</td>
-                <td>@reading.MeterReadingDateTime</td>
-                <td>@reading.MeterReadingValue</td>
-            </tr>
+                <tr>
+                    <td>@reading.AccountId</td>
+                    <td>@reading.Id</td>
+                    <td>@reading.MeterReadingDateTime</td>
+                    <td>@reading.MeterReadingValue</td>
+                    <td>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
@@ -37,6 +44,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        readings = await Http.GetFromJsonAsync<MeterReadingDto[]>("http://localhost:41943/api/MeterReadings");
+        readings = await Http.GetFromJsonAsync<MeterReadingDto[]>("http://localhost:41943/api/meterreadings");
     }
 }

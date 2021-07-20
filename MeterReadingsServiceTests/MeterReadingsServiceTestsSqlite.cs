@@ -48,6 +48,42 @@
 		}
 
 		[Fact]
+		public async Task Cant_create_meter_reading_with_no_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingDto newReading = new()
+			{
+				Id = 3,
+				AccountId = 999,
+				MeterReadingDateTime = new DateTime(2003, 3, 3),
+				MeterReadingValue = 3333
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<MeterReadingsServiceException>(() => service.MeterReading.CreateAsync(newReading));
+		}
+
+		[Fact]
+		public async Task Cant_create_meter_reading_with_duplicate_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingDto newReading = new()
+			{
+				Id = 1,
+				AccountId = 1,
+				MeterReadingDateTime = new DateTime(2003, 3, 3),
+				MeterReadingValue = 3333
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<MeterReadingsServiceException>(() => service.MeterReading.CreateAsync(newReading));
+		}
+
+		[Fact]
 		public async Task Can_read_all_meter_readings()
 		{
 			// Arrange

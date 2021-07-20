@@ -1,0 +1,66 @@
+﻿@page "/meterreadings/create"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>Create Meter Reading</h1>
+<hr />
+
+@if (accounts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@readingModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>Account Id</p>
+        <p>
+            <InputSelect @bind-Value="readingModel.AccountId">
+                @foreach (AccountDto account in accounts)
+                {
+                    <option id="@account.Id">@account.Id</option>
+                }
+            </InputSelect>
+        </p>
+        <p>Meter Reading Time</p>
+        <p>
+            @*<input type="datetime" @bind="readingModel.MeterReadingDateTime" @bind:format="dd/MM/yyyy hh:mm:ss" />*@
+            <InputDate @bind-Value="readingModel.MeterReadingDateTime" @bind-Value:format="dd/MM/yyyy hh:mm:ss" />
+        </p>
+        <p>Reading Value</p>
+        <p>
+            <InputNumber @bind-Value="readingModel.MeterReadingValue" />
+        </p>
+        <p>
+            <button type="submit">Create</button>
+        </p>
+    </EditForm>
+
+    <p>
+        <NavLink href="/mmeterreadings">Back to Meter Readings</NavLink>
+    </p>
+}
+
+@code {
+    private MeterReadingViewModel readingModel = new()
+    {
+        MeterReadingDateTime = DateTime.UtcNow,
+    };
+
+    private AccountDto[] accounts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await Http.GetFromJsonAsync<AccountDto[]>("http://localhost:41943/api/accounts");
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
+        var response = await Http.PostAsJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings", readingDto);
+
+        NavigationManager.NavigateTo("/meterreadings");
+    }
+}
