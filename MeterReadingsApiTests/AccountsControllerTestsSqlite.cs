@@ -120,5 +120,48 @@
 			ActionResult<AccountDto> actionResult = controller.GetAccount(3).Result;
 			Assert.IsType<NotFoundResult>(actionResult.Result);
 		}
+
+		[Fact]
+		public async Task Can_update_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+
+			AccountDto existing = (await service.Account.ReadAsync(x => x.Id == 1)).FirstOrDefault();
+			existing.FirstName = "updated";
+			existing.LastName = "account";
+
+			// Act
+			ActionResult<AccountDto> actionResult = await controller.UpdateAccount(existing);
+			Assert.IsType<OkObjectResult>(actionResult.Result);
+			AccountDto account = GetObjectResultContent(actionResult);
+
+			// Assert
+			Assert.Equal(1, account.Id);
+			Assert.Equal("updated", account.FirstName);
+			Assert.Equal("account", account.LastName);
+		}
+
+		[Fact]
+		public async Task Cant_update_no_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+
+			AccountDto existing = new()
+			{
+				Id = 3,
+				FirstName = "updated",
+				LastName = "account",
+			};
+
+			// Act & Assert
+			ActionResult<AccountDto> actionResult = await controller.UpdateAccount(existing);
+			Assert.IsType<NotFoundResult>(actionResult.Result);
+		}
 	}
 }

@@ -59,6 +59,32 @@
 			{
 				return Conflict();
 			}
+
+			return Ok(newAccount);
+		}
+
+		// PUT: api/accounts
+		[HttpPut]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		public async Task<ActionResult<AccountDto>> UpdateAccount([FromBody] AccountDto accountDto)
+		{
+			AccountDto newAccount;
+			IEnumerable<AccountDto> accounts = await _service.Account.ReadAsync(x => x.Id == accountDto.Id);
+			if (accounts == null)
+			{
+				return BadRequest();
+			}
+
+			try
+			{
+				newAccount = await _service.Account.UpdateAsync(accountDto);
+			}
+			catch (MeterReadingsServiceException)
+			{
+				return NotFound();
+			}
+
 			return Ok(newAccount);
 		}
 	}

@@ -10,7 +10,7 @@
 else
 {
     <p>
-        <NavLink href = "/accounts/create">Create Account</NavLink>
+        <NavLink href="/accounts/create">Create Account</NavLink>
     </p>
 
     <table class="table">
@@ -19,6 +19,7 @@ else
             <th>Account Id</th>
             <th>First Name</th>
             <th>Last Name</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,9 @@ else
                 <td>@account.Id</td>
                 <td>@account.FirstName</td>
                 <td>@account.LastName</td>
+                <td>
+                    <a href="/accounts/edit/@account.Id">Edit</a>
+                </td>
             </tr>
         }
     </tbody>

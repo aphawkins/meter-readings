@@ -1,0 +1,59 @@
+﻿@page "/accounts/edit/{id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>Edit Account</h1>
+<hr />
+
+@if (accountModel == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@accountModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>Account Id</p>
+        <p>
+            <InputNumber id="accountId" @bind-Value="accountModel.Id" disabled="true" />
+        </p>
+        <p>First Name</p>
+        <p>
+            <InputText id="firstname" @bind-Value="accountModel.FirstName" />
+        </p>
+        <p>Last Name</p>
+        <p>
+            <InputText id="lastname" @bind-Value="accountModel.LastName" />
+        </p>
+        <p>
+            <button type="submit">Save</button>
+        </p>
+    </EditForm>
+
+    <p>
+        <NavLink href="/accounts">Back to Accounts</NavLink>
+    </p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private AccountViewModel accountModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        AccountDto accountDto = await Http.GetFromJsonAsync<AccountDto>("http://localhost:41943/api/accounts/" + Id);
+        accountModel = new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(accountDto);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        AccountDto accountDto = new Mapper(ViewModelMapperConfig.Config).Map<AccountDto>(accountModel);
+        var response = await Http.PutAsJsonAsync<AccountDto>("http://localhost:41943/api/accounts", accountDto);
+
+        NavigationManager.NavigateTo("/accounts");
+    }
+}

@@ -52,7 +52,14 @@
 		{
 			Mapper mapper = new(DtoMapperConfig.Config);
 			TDto updated = mapper.Map<TDto>(RepositoryContext.Set<TEntity>().Update(mapper.Map<TEntity>(dto)).Entity);
-			await RepositoryContext.SaveChangesAsync();
+			try
+			{
+				await RepositoryContext.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				throw new MeterReadingsServiceException("Error updating entity.", ex);
+			}
 			return updated;
 		}
 

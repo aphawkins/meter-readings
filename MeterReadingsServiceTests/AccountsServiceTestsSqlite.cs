@@ -117,6 +117,23 @@
 		}
 
 		[Fact]
+		public async Task Cant_update_no_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountDto existing = new()
+			{
+				Id = 3,
+				FirstName = "updated",
+				LastName = "account"
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<MeterReadingsServiceException>(() => service.Account.UpdateAsync(existing));
+		}
+
+		[Fact]
 		public async Task Can_delete_account_by_id()
 		{
 			// Arrange
