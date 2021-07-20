@@ -91,7 +91,7 @@
 		}
 
 		[Fact]
-		public void Can_get_account_by_id()
+		public async Task Can_get_account_by_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -99,7 +99,7 @@
 			AccountsController controller = new(service);
 
 			// Act
-			ActionResult<AccountDto> actionResult = controller.GetAccount(1).Result;
+			ActionResult<AccountDto> actionResult = await controller.GetAccount(1);
 			Assert.IsType<OkObjectResult>(actionResult.Result);
 			AccountDto account = GetObjectResultContent(actionResult);
 
@@ -109,7 +109,7 @@
 		}
 
 		[Fact]
-		public void Cant_get_account_by_no_id()
+		public async Task Cant_get_account_by_no_id()
 		{
 			// Arrange
 			using MainDbContext context = new(ContextOptions);
@@ -117,7 +117,7 @@
 			AccountsController controller = new(service);
 
 			// Act & Assert
-			ActionResult<AccountDto> actionResult = controller.GetAccount(3).Result;
+			ActionResult<AccountDto> actionResult = await controller.GetAccount(3);
 			Assert.IsType<NotFoundResult>(actionResult.Result);
 		}
 

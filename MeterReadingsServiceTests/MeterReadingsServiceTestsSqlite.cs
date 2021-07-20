@@ -125,6 +125,16 @@
 			Assert.Equal(1111, readings[0].MeterReadingValue);
 		}
 
+		[Fact]
+		public async Task Cant_read_meter_reading_by_no_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+
+			// Act & Assert
+			Assert.Empty(await service.MeterReading.ReadAsync(x => x.Id == 3));
+		}
 
 		[Fact]
 		public async Task Can_update_meter_reading()
@@ -144,6 +154,23 @@
 			Assert.Equal(1, reading.AccountId);
 			Assert.Equal(new DateTime(2011, 11, 11), reading.MeterReadingDateTime);
 			Assert.Equal(11111, reading.MeterReadingValue);
+		}
+
+		[Fact]
+		public async Task Cant_update_no_account()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingDto existing = new()
+			{
+				Id = 3,
+				MeterReadingDateTime = new DateTime(2003, 3, 3),
+				MeterReadingValue = 33333
+			};
+
+			// Act & Assert
+			await Assert.ThrowsAsync<MeterReadingsServiceException>(() => service.MeterReading.UpdateAsync(existing));
 		}
 
 		[Fact]

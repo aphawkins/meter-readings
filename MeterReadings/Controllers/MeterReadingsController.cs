@@ -6,6 +6,7 @@
 	using Microsoft.AspNetCore.Mvc;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 	using System.Threading.Tasks;
 
 	[ApiController]
@@ -19,6 +20,7 @@
 			_service = service;
 		}
 
+		// POST: api/meterreadings
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -37,12 +39,48 @@
 			return Ok(newReading);
 		}
 
+		// GET: api/meterreadings
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult<IEnumerable<MeterReadingDto>>> GetMeterReadings()
 		{
 			IEnumerable<MeterReadingDto> readings = await _service.MeterReading.ReadAsync();
 			return Ok(readings);
+		}
+
+		// GET: api/meterreadings/{id}
+		[HttpGet("{id:int}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<MeterReadingDto>> GetMeterReading(int id)
+		{
+			MeterReadingDto reading = (await _service.MeterReading.ReadAsync(x => x.Id == id)).FirstOrDefault();
+			if (reading == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(reading);
+		}
+
+		// PUT: api/meterreadings
+		[HttpPut]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<MeterReadingDto>> UpdateMeterReading([FromBody] MeterReadingDto readingDto)
+		{
+			MeterReadingDto newReading;
+
+			try
+			{
+				newReading = await _service.MeterReading.UpdateAsync(readingDto);
+			}
+			catch (MeterReadingsServiceException)
+			{
+				return NotFound();
+			}
+
+			return Ok(newReading);
 		}
 
 		[HttpDelete]

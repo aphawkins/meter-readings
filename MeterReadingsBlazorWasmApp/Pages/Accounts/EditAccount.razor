@@ -41,7 +41,7 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private AccountViewModel accountModel = new();
+    private AccountViewModel accountModel;
 
     protected override async Task OnInitializedAsync()
     {

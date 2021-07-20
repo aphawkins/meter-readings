@@ -1,0 +1,71 @@
+﻿@page "/meterreadings/edit/{id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>Edit Meter Reading</h1>
+<hr />
+
+@if (accounts == null && readingModel == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="@readingModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <p>Account Id</p>
+        <p>
+            <InputSelect @bind-Value="readingModel.AccountId">
+                @foreach (AccountDto account in accounts)
+                {
+                    <option id="@account.Id">@account.Id</option>
+                }
+            </InputSelect>
+        </p>
+        <p>Meter Reading Id</p>
+        <p>
+            <InputNumber @bind-Value="readingModel.Id" disabled="true" />
+        </p>
+        <p>Reading Time</p>
+        <p>
+            <InputDate @bind-Value="readingModel.MeterReadingDateTime" />
+        </p>
+        <p>Reading Value</p>
+        <p>
+            <InputNumber @bind-Value="readingModel.MeterReadingValue" />
+        </p>
+        <p>
+            <button type="submit">Save</button>
+        </p>
+    </EditForm>
+
+    <p>
+        <NavLink href="/meterreadings">Back to Meter Readings</NavLink>
+    </p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private MeterReadingViewModel readingModel;
+    private AccountDto[] accounts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        accounts = await Http.GetFromJsonAsync<AccountDto[]>("http://localhost:41943/api/accounts");
+
+        MeterReadingDto readingDto = await Http.GetFromJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings/" + Id);
+        readingModel = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(readingDto);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
+        var response = await Http.PutAsJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings", readingDto);
+
+        NavigationManager.NavigateTo("/meterreadings");
+    }
+}
