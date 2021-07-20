@@ -134,6 +134,20 @@
 		}
 
 		[Fact]
+		public async Task Can_delete_all_accounts()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+
+			// Act
+			await service.Account.DeleteAsync();
+
+			// Assert
+			Assert.Empty(await service.Account.ReadAsync());
+		}
+
+		[Fact]
 		public async Task Can_delete_account_by_id()
 		{
 			// Arrange
@@ -159,20 +173,6 @@
 
 			// Assert
 			Assert.Equal(2, (await service.Account.ReadAsync()).Count());
-		}
-
-		[Fact]
-		public async Task Can_delete_all_accounts()
-		{
-			// Arrange
-			using MainDbContext context = new(ContextOptions);
-			IMeterReadingsService service = new MeterReadingsService(context);
-
-			// Act
-			await service.Account.DeleteAsync();
-
-			// Assert
-			Assert.Empty(await service.Account.ReadAsync());
 		}
 	}
 }

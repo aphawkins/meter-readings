@@ -217,6 +217,37 @@
 			Assert.True(reading.Deleted);
 		}
 
+		[Fact]
+		public async Task Can_delete_meter_reading_by_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingsController controller = new(service);
+
+			// Act
+			ActionResult actionResult = await controller.DeleteMeterReading(1);
+			Assert.IsType<OkResult>(actionResult);
+
+			// Assert
+			Assert.Single(GetObjectResultContent(await controller.GetMeterReadings()));
+			ActionResult<MeterReadingDto> getActionResult = controller.GetMeterReading(1).Result;
+			Assert.IsType<NotFoundResult>(getActionResult.Result);
+		}
+
+		[Fact]
+		public async Task Cant_delete_no_meter_reading_by_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			MeterReadingsController controller = new(service);
+
+			// Act & Assert
+			ActionResult actionResult = await controller.DeleteMeterReading(3);
+			Assert.IsType<NotFoundResult>(actionResult);
+		}
+
 		private class DeleteMeterReadingsResponse
 		{
 			[JsonProperty("deleted")]

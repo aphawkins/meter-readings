@@ -10,6 +10,8 @@
 	using MeterReadingsTestLibrary;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Linq;
 	using Xunit;
 
 	public class AccountsControllerTestsSqlite : ControllerTestsBase
@@ -165,6 +167,25 @@
 		}
 
 		[Fact]
+		public async Task Can_delete_all_accounts()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+
+			// Act
+			ActionResult<object> actionResult = await controller.DeleteAccounts();
+			Assert.IsType<OkObjectResult>(actionResult.Result);
+			object response = GetObjectResultContent(actionResult);
+
+			DeleteAccountsResponse account = JObject.FromObject(response).ToObject<DeleteAccountsResponse>();
+
+			// Assert
+			Assert.True(account.Deleted);
+		}
+
+		[Fact]
 		public async Task Can_delete_account_by_id()
 		{
 			// Arrange
@@ -193,6 +214,12 @@
 			// Act & Assert
 			ActionResult actionResult = await controller.DeleteAccount(3);
 			Assert.IsType<NotFoundResult>(actionResult);
+		}
+
+		private class DeleteAccountsResponse
+		{
+			[JsonProperty("deleted")]
+			public bool Deleted { get; set; }
 		}
 	}
 }

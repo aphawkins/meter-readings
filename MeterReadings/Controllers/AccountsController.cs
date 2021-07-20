@@ -83,6 +83,15 @@
 			return Ok(newAccount);
 		}
 
+		// Delete: api/accounts
+		[HttpDelete]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<ActionResult> DeleteAccounts()
+		{
+			await _service.Account.DeleteAsync();
+			return Ok(new { deleted = true });
+		}
+
 		// Delete: api/accounts/{id}
 		[HttpDelete("{id:int}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

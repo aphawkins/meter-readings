@@ -83,12 +83,37 @@
 			return Ok(newReading);
 		}
 
+		// Delete: api/meterreadings
 		[HttpDelete]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public async Task<ActionResult> DeleteMeterReadings()
 		{
 			await _service.MeterReading.DeleteAsync();
 			return Ok(new { deleted = true });
+		}
+
+		// Delete: api/meterreadings/{id}
+		[HttpDelete("{id:int}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult> DeleteMeterReading([FromRoute] int id)
+		{
+			MeterReadingDto reading = (await _service.MeterReading.ReadAsync(x => x.Id == id)).FirstOrDefault();
+			if (reading == null)
+			{
+				return NotFound();
+			}
+
+			try
+			{
+				await _service.MeterReading.DeleteAsync(reading);
+			}
+			catch (MeterReadingsServiceException)
+			{
+				return NotFound();
+			}
+
+			return Ok();
 		}
 
 		[Route("csv-file")]

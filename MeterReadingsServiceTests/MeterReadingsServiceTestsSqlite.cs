@@ -174,6 +174,20 @@
 		}
 
 		[Fact]
+		public async Task Can_delete_all_meter_readings()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+
+			// Act
+			await service.MeterReading.DeleteAsync();
+
+			// Assert
+			Assert.Empty(await service.MeterReading.ReadAsync());
+		}
+
+		[Fact]
 		public async Task Can_delete_meter_reading_by_id()
 		{
 			// Arrange
@@ -201,20 +215,6 @@
 
 			// Assert
 			Assert.Equal(2, (await service.MeterReading.ReadAsync()).Count());
-		}
-
-		[Fact]
-		public async Task Can_delete_all_meter_readings()
-		{
-			// Arrange
-			using MainDbContext context = new(ContextOptions);
-			IMeterReadingsService service = new MeterReadingsService(context);
-
-			// Act
-			await service.MeterReading.DeleteAsync();
-
-			// Assert
-			Assert.Empty(await service.MeterReading.ReadAsync());
 		}
 	}
 }
