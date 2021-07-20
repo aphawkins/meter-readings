@@ -19,30 +19,6 @@
 			_service = service;
 		}
 
-		// GET: api/accounts
-		[HttpGet]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public async Task<ActionResult<IEnumerable<AccountDto>>> GetAccounts()
-		{
-			IEnumerable<AccountDto> accounts = await _service.Account.ReadAsync();
-			return Ok(accounts);
-		}
-
-		// GET: api/accounts/5
-		[HttpGet("{id:int}")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<AccountDto>> GetAccount(int id)
-		{
-			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault();
-			if (account == null)
-			{
-				return NotFound();
-			}
-
-			return Ok(account);
-		}
-
 		// POST: api/accounts
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
@@ -63,18 +39,37 @@
 			return Ok(newAccount);
 		}
 
+		// GET: api/accounts
+		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public async Task<ActionResult<IEnumerable<AccountDto>>> GetAccounts()
+		{
+			IEnumerable<AccountDto> accounts = await _service.Account.ReadAsync();
+			return Ok(accounts);
+		}
+
+		// GET: api/accounts/{id}
+		[HttpGet("{id:int}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<AccountDto>> GetAccount(int id)
+		{
+			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault();
+			if (account == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(account);
+		}
+
 		// PUT: api/accounts
 		[HttpPut]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<AccountDto>> UpdateAccount([FromBody] AccountDto accountDto)
 		{
 			AccountDto newAccount;
-			IEnumerable<AccountDto> accounts = await _service.Account.ReadAsync(x => x.Id == accountDto.Id);
-			if (accounts == null)
-			{
-				return BadRequest();
-			}
 
 			try
 			{
@@ -86,6 +81,30 @@
 			}
 
 			return Ok(newAccount);
+		}
+
+		// Delete: api/accounts/{id}
+		[HttpDelete("{id:int}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult> DeleteAccount([FromRoute] int id)
+		{
+			AccountDto account = (await _service.Account.ReadAsync(x => x.Id == id)).FirstOrDefault();
+			if (account == null)
+			{
+				return NotFound();
+			}
+
+			try
+			{
+				await _service.Account.DeleteAsync(account);
+			}
+			catch (MeterReadingsServiceException)
+			{
+				return NotFound();
+			}
+
+			return Ok();
 		}
 	}
 }

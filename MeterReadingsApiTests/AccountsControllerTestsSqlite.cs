@@ -163,5 +163,36 @@
 			ActionResult<AccountDto> actionResult = await controller.UpdateAccount(existing);
 			Assert.IsType<NotFoundResult>(actionResult.Result);
 		}
+
+		[Fact]
+		public async Task Can_delete_account_by_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+
+			// Act
+			ActionResult actionResult = await controller.DeleteAccount(1);
+			Assert.IsType<OkResult>(actionResult);
+
+			// Assert
+			Assert.Single(GetObjectResultContent(await controller.GetAccounts()));
+			ActionResult<AccountDto> getActionResult = controller.GetAccount(1).Result;
+			Assert.IsType<NotFoundResult>(getActionResult.Result);
+		}
+
+		[Fact]
+		public async Task Cant_delete_no_account_by_id()
+		{
+			// Arrange
+			using MainDbContext context = new(ContextOptions);
+			IMeterReadingsService service = new MeterReadingsService(context);
+			AccountsController controller = new(service);
+
+			// Act & Assert
+			ActionResult actionResult = await controller.DeleteAccount(3);
+			Assert.IsType<NotFoundResult>(actionResult);
+		}
 	}
 }
