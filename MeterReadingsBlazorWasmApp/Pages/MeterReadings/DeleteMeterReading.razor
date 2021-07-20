@@ -1,0 +1,58 @@
+﻿@page "/meterreadings/delete/{id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>Delete Meter Reading</h1>
+<h3>Are you sure you want to delete this?</h3>
+<hr />
+
+@if (readingModel == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <dl>
+            <dt>Account Id</dt>
+            <dd>@readingModel.AccountId</dd>
+            <dt>Meter Reading Id</dt>
+            <dd>@readingModel.Id</dd>
+            <dt>Reading Time</dt>
+            <dd> @readingModel.MeterReadingDateTime</dd>
+            <dt>Reading Value</dt>
+            <dd> @readingModel.MeterReadingValue</dd>
+        </dl>
+    </div>
+
+    <EditForm Model="@readingModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <button type="submit">Delete</button>
+    </EditForm>
+
+    <p>
+        <NavLink href="/meterreadings">Back to Meter Readings</NavLink>
+    </p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private MeterReadingViewModel readingModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        MeterReadingDto readingDto = await Http.GetFromJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings/" + Id);
+        readingModel = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(readingDto);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
+        var response = await Http.DeleteAsync("http://localhost:41943/api/meterreadings/" + readingDto.Id);
+
+        NavigationManager.NavigateTo("/meterreadings");
+    }
+}
