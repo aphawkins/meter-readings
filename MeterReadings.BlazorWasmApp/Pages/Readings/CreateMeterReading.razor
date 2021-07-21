@@ -58,7 +58,7 @@ else
 
     private async Task HandleValidSubmit()
     {
-        MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
+        MeterReadings.Dto.MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
         var response = await Http.PostAsJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings", readingDto);
 
         NavigationManager.NavigateTo("/meterreadings");

@@ -1,6 +1,6 @@
 {
-  "name": "MeterReadingsBlazorWasmApp",
-  "short_name": "MeterReadingsBlazorWasmApp",
+  "name": "MeterReadings.BlazorWasmApp",
+  "short_name": "MeterReadings.BlazorWasmApp",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",

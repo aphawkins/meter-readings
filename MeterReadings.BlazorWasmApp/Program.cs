@@ -1,4 +1,4 @@
-namespace MeterReadingsBlazorWasmApp
+namespace MeterReadings.BlazorWasmApp
 {
 	using System;
 	using System.Net.Http;

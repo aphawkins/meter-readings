@@ -28,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadings.ApiTests", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadings.MvcApp", "MeterReadings.MvcApp\MeterReadings.MvcApp.csproj", "{5FFF3C59-FD5B-4B1C-8ED8-39E35FBD0F17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadingsBlazorWasmApp", "MeterReadingsBlazorWasmApp\MeterReadingsBlazorWasmApp.csproj", "{DEF62912-FB2B-428E-88E2-A0FEF3B376C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeterReadings.BlazorWasmApp", "MeterReadings.BlazorWasmApp\MeterReadings.BlazorWasmApp.csproj", "{9E343939-0629-4057-865F-DD067BEE52C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,10 +72,10 @@ Global
 		{5FFF3C59-FD5B-4B1C-8ED8-39E35FBD0F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FFF3C59-FD5B-4B1C-8ED8-39E35FBD0F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FFF3C59-FD5B-4B1C-8ED8-39E35FBD0F17}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DEF62912-FB2B-428E-88E2-A0FEF3B376C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEF62912-FB2B-428E-88E2-A0FEF3B376C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DEF62912-FB2B-428E-88E2-A0FEF3B376C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DEF62912-FB2B-428E-88E2-A0FEF3B376C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E343939-0629-4057-865F-DD067BEE52C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E343939-0629-4057-865F-DD067BEE52C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E343939-0629-4057-865F-DD067BEE52C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E343939-0629-4057-865F-DD067BEE52C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
