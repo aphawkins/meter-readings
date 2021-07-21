@@ -14,7 +14,7 @@ namespace MeterReadings.BlazorWasmApp
 			WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:41943") });
+			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:41943") }).AddPolicyRegistry(ClientRetryPolicy.Registry);
 			builder.Services.AddScoped<IMeterReadingsApiClient, MeterReadingsApiClient>();
 
 			await builder.Build().RunAsync();

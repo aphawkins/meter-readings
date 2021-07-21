@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Polly" Version="7.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MeterReadings.Dto\MeterReadings.Dto.csproj" />
   </ItemGroup>
 
