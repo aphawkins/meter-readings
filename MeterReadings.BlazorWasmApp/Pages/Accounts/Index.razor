@@ -1,5 +1,5 @@
 ﻿@page "/accounts"
-@inject HttpClient Http
+@inject IAccountsClient accountsClient
 
 <h1>Accounts</h1>
 
@@ -30,7 +30,7 @@ else
                     <td>@account.FirstName</td>
                     <td>@account.LastName</td>
                     <td>
-                        <a href="/accounts/edit/@account.Id">Edit</a> | 
+                        <a href="/accounts/edit/@account.Id">Edit</a> |
                         <a href="/accounts/delete/@account.Id">Delete</a>
                     </td>
                 </tr>
@@ -44,6 +44,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        accounts = await Http.GetFromJsonAsync<AccountDto[]>("http://localhost:41943/api/accounts");
+        accounts = await accountsClient.GetAllAccounts();
     }
 }

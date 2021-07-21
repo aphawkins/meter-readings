@@ -1,5 +1,5 @@
 ﻿@page "/accounts/edit/{id:int}"
-@inject HttpClient Http
+@inject IAccountsClient accountsClient
 @inject NavigationManager NavigationManager
 
 <h1>Edit Account</h1>
@@ -45,14 +45,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        AccountDto accountDto = await Http.GetFromJsonAsync<AccountDto>("http://localhost:41943/api/accounts/" + Id);
+        AccountDto accountDto = await accountsClient.GetAccount(Id);
         accountModel = new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(accountDto);
     }
 
     private async Task HandleValidSubmit()
     {
         AccountDto accountDto = new Mapper(ViewModelMapperConfig.Config).Map<AccountDto>(accountModel);
-        var response = await Http.PutAsJsonAsync<AccountDto>("http://localhost:41943/api/accounts", accountDto);
+        await accountsClient.UpdateAccount(accountDto);
 
         NavigationManager.NavigateTo("/accounts");
     }

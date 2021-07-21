@@ -1,5 +1,5 @@
 ﻿@page "/accounts/create"
-@inject HttpClient Http
+@inject IAccountsClient accountsClient
 @inject NavigationManager NavigationManager
 
 <h1>Create Account</h1>
@@ -36,7 +36,7 @@
     private async Task HandleValidSubmit()
     {
         AccountDto accountDto = new Mapper(ViewModelMapperConfig.Config).Map<AccountDto>(accountModel);
-        var response = await Http.PostAsJsonAsync<AccountDto>("http://localhost:41943/api/accounts", accountDto);
+        await accountsClient.CreateAccount(accountDto);
 
         NavigationManager.NavigateTo("/accounts");
     }
