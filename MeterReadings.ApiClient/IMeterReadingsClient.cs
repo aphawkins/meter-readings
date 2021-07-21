@@ -2,7 +2,7 @@
 {
 	using MeterReadings.Dto;
 
-	public interface IAccountsClient : IClient<AccountDto>
+	public interface IMeterReadingsClient : IClient<MeterReadingDto>
 	{
 	}
 }

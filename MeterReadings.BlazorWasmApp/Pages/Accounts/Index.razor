@@ -1,5 +1,5 @@
 ﻿@page "/accounts"
-@inject IAccountsClient accountsClient
+@inject IMeterReadingsApiClient apiClient
 
 <h1>Accounts</h1>
 
@@ -44,6 +44,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        accounts = await accountsClient.GetAllAccounts();
+        accounts = await apiClient.Accounts.GetAllAsync();
     }
 }

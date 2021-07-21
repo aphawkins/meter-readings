@@ -1,5 +1,5 @@
 ﻿@page "/meterreadings/edit/{id:int}"
-@inject HttpClient Http
+@inject IMeterReadingsApiClient apiClient
 @inject NavigationManager NavigationManager
 
 <h1>Edit Meter Reading</h1>
@@ -19,9 +19,9 @@ else
         <p>
             <InputSelect @bind-Value="readingModel.AccountId">
                 @foreach (AccountDto account in accounts)
-                {
+                    {
                     <option id="@account.Id">@account.Id</option>
-                }
+                    }
             </InputSelect>
         </p>
         <p>Meter Reading Id</p>
@@ -55,16 +55,16 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        accounts = await Http.GetFromJsonAsync<AccountDto[]>("http://localhost:41943/api/accounts");
+        accounts = await apiClient.Accounts.GetAllAsync();
 
-        MeterReadingDto readingDto = await Http.GetFromJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings/" + Id);
+        MeterReadingDto readingDto = await apiClient.MeterReadings.GetAsync(Id);
         readingModel = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(readingDto);
     }
 
     private async Task HandleValidSubmit()
     {
         MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
-        var response = await Http.PutAsJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings", readingDto);
+        var response = await apiClient.MeterReadings.UpdateAsync(readingDto);
 
         NavigationManager.NavigateTo("/meterreadings");
     }

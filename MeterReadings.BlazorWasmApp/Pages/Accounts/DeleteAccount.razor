@@ -1,5 +1,5 @@
 ﻿@page "/accounts/delete/{id:int}"
-@inject IAccountsClient accountsClient
+@inject IMeterReadingsApiClient apiClient
 @inject NavigationManager NavigationManager
 
 <h1>Delete Account</h1>
@@ -42,13 +42,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        AccountDto accountDto = await accountsClient.GetAccount(Id);
+        AccountDto accountDto = await apiClient.Accounts.GetAsync(Id);
         accountModel = new Mapper(ViewModelMapperConfig.Config).Map<AccountViewModel>(accountDto);
     }
 
     private async Task HandleValidSubmit()
     {
-        await accountsClient.DeleteAccount(accountModel.Id);
+        await apiClient.Accounts.DeleteAsync(accountModel.Id);
 
         NavigationManager.NavigateTo("/accounts");
     }

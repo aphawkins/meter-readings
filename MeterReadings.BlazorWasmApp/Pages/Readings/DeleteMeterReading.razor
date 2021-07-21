@@ -1,5 +1,5 @@
 ﻿@page "/meterreadings/delete/{id:int}"
-@inject HttpClient Http
+@inject IMeterReadingsApiClient apiClient
 @inject NavigationManager NavigationManager
 
 <h1>Delete Meter Reading</h1>
@@ -44,14 +44,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        MeterReadingDto readingDto = await Http.GetFromJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings/" + Id);
+        MeterReadingDto readingDto = await apiClient.MeterReadings.GetAsync(Id);
         readingModel = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingViewModel>(readingDto);
     }
 
     private async Task HandleValidSubmit()
     {
         MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
-        var response = await Http.DeleteAsync("http://localhost:41943/api/meterreadings/" + readingDto.Id);
+        await apiClient.MeterReadings.DeleteAsync(Id);
 
         NavigationManager.NavigateTo("/meterreadings");
     }

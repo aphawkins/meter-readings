@@ -1,5 +1,5 @@
 ﻿@page "/accounts/create"
-@inject IAccountsClient accountsClient
+@inject IMeterReadingsApiClient apiClient
 @inject NavigationManager NavigationManager
 
 <h1>Create Account</h1>
@@ -36,7 +36,7 @@
     private async Task HandleValidSubmit()
     {
         AccountDto accountDto = new Mapper(ViewModelMapperConfig.Config).Map<AccountDto>(accountModel);
-        await accountsClient.CreateAccount(accountDto);
+        await apiClient.Accounts.CreateAsync(accountDto);
 
         NavigationManager.NavigateTo("/accounts");
     }

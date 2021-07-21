@@ -1,5 +1,5 @@
 ﻿@page "/meterreadings"
-@inject HttpClient Http
+@inject IMeterReadingsApiClient apiClient
 
 <h1>Meter Readings</h1>
 
@@ -32,7 +32,7 @@ else
                     <td>@reading.MeterReadingDateTime</td>
                     <td>@reading.MeterReadingValue</td>
                     <td>
-                        <a href="/meterreadings/edit/@reading.Id">Edit</a> | 
+                        <a href="/meterreadings/edit/@reading.Id">Edit</a> |
                         <a href="/meterreadings/delete/@reading.Id">Delete</a>
                     </td>
                 </tr>
@@ -46,6 +46,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        readings = await Http.GetFromJsonAsync<MeterReadingDto[]>("http://localhost:41943/api/meterreadings");
+        readings = await apiClient.MeterReadings.GetAllAsync();
     }
 }

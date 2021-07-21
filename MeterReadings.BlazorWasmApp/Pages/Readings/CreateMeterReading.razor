@@ -1,5 +1,5 @@
 ﻿@page "/meterreadings/create"
-@inject HttpClient Http
+@inject IMeterReadingsApiClient apiClient
 @inject NavigationManager NavigationManager
 
 <h1>Create Meter Reading</h1>
@@ -19,9 +19,9 @@ else
         <p>
             <InputSelect @bind-Value="readingModel.AccountId">
                 @foreach (AccountDto account in accounts)
-                {
+                    {
                     <option id="@account.Id">@account.Id</option>
-                }
+                    }
             </InputSelect>
         </p>
         <p>Meter Reading Time</p>
@@ -53,13 +53,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        accounts = await Http.GetFromJsonAsync<AccountDto[]>("http://localhost:41943/api/accounts");
+        accounts = await apiClient.Accounts.GetAllAsync();
     }
 
     private async Task HandleValidSubmit()
     {
-        MeterReadings.Dto.MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
-        var response = await Http.PostAsJsonAsync<MeterReadingDto>("http://localhost:41943/api/meterreadings", readingDto);
+        MeterReadingDto readingDto = new Mapper(ViewModelMapperConfig.Config).Map<MeterReadingDto>(readingModel);
+        var response = await apiClient.MeterReadings.CreateAsync(readingDto);
 
         NavigationManager.NavigateTo("/meterreadings");
     }

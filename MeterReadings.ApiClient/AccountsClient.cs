@@ -7,8 +7,6 @@
 
 	public class AccountsClient : IAccountsClient
 	{
-		private const string url = "http://localhost:41943/api/accounts";
-
 		private readonly HttpClient _httpClient;
 
 		public AccountsClient(HttpClient httpClient)
@@ -16,31 +14,31 @@
 			_httpClient = httpClient;
 		}
 
-		public async Task<AccountDto> CreateAccount(AccountDto account)
+		public async Task<AccountDto> CreateAsync(AccountDto item)
 		{
-			HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, account);
+			HttpResponseMessage response = await _httpClient.PostAsJsonAsync("/api/accounts", item);
 			return await response.Content.ReadFromJsonAsync<AccountDto>();
 		}
 
-		public async Task<AccountDto[]> GetAllAccounts()
+		public async Task<AccountDto> GetAsync(int id)
 		{
-			return await _httpClient.GetFromJsonAsync<AccountDto[]>(url);
+			return await _httpClient.GetFromJsonAsync<AccountDto>("/api/accounts/" + id);
 		}
 
-		public async Task<AccountDto> GetAccount(int id)
+		public async Task<AccountDto[]> GetAllAsync()
 		{
-			return await _httpClient.GetFromJsonAsync<AccountDto>(url + "/" + id);
+			return await _httpClient.GetFromJsonAsync<AccountDto[]>("/api/accounts");
 		}
 
-		public async Task<AccountDto> UpdateAccount(AccountDto account)
+		public async Task<AccountDto> UpdateAsync(AccountDto item)
 		{
-			HttpResponseMessage response = await _httpClient.PutAsJsonAsync(url, account);
+			HttpResponseMessage response = await _httpClient.PutAsJsonAsync("/api/accounts", item);
 			return await response.Content.ReadFromJsonAsync<AccountDto>();
 		}
 
-		public async Task DeleteAccount(int id)
+		public async Task DeleteAsync(int id)
 		{
-			await _httpClient.DeleteAsync(url + "/" + id);
+			await _httpClient.DeleteAsync("/api/accounts/" + id);
 		}
 	}
 }
