@@ -1,6 +1,6 @@
 ﻿namespace MeterReadings.Service
 {
-	using MeterReadings.Data;
+	using MeterReadings.DB;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.Extensions.DependencyInjection;
 

@@ -7,7 +7,7 @@
 	using System.Threading.Tasks;
 	using AutoMapper;
 	using AutoMapper.QueryableExtensions;
-	using MeterReadings.Data;
+	using MeterReadings.DB;
 	using Microsoft.EntityFrameworkCore;
 
 	public abstract class RepositoryBase<TDto, TEntity> : IRepository<TDto> where TDto : class where TEntity : class

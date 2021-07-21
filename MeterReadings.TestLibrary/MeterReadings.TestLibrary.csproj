@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MeterReadings.Data\MeterReadings.Data.csproj" />
+    <ProjectReference Include="..\MeterReadings.DB\MeterReadings.DB.csproj" />
   </ItemGroup>
 
 </Project>

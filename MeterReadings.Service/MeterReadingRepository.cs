@@ -4,8 +4,8 @@
 	using System.IO;
 	using System.Linq;
 	using System.Threading.Tasks;
-	using MeterReadings.Data;
-	using MeterReadings.Data.Entities;
+	using MeterReadings.DB;
+	using MeterReadings.DB.Entities;
 	using MeterReadings.Dto;
 
 	public class MeterReadingRepository : RepositoryBase<MeterReadingDto, MeterReading>, IMeterReadingRepository

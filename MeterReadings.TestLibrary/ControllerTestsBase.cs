@@ -1,8 +1,8 @@
 namespace MeterReadings.TestLibrary
 {
 	using System;
-	using MeterReadings.Data;
-	using MeterReadings.Data.Entities;
+	using MeterReadings.DB;
+	using MeterReadings.DB.Entities;
 	using Microsoft.AspNetCore.Mvc;
 	using Microsoft.EntityFrameworkCore;
 

@@ -1,6 +1,6 @@
-﻿namespace MeterReadings.Data
+﻿namespace MeterReadings.DB
 {
-	using MeterReadings.Data.Entities;
+	using MeterReadings.DB.Entities;
 	using Microsoft.EntityFrameworkCore;
 
 	public class MainDbContext : DbContext

@@ -1,4 +1,4 @@
-﻿namespace MeterReadings.Data.Entities
+﻿namespace MeterReadings.DB.Entities
 {
 	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations.Schema;

@@ -1,7 +1,7 @@
 ﻿namespace MeterReadings.Service
 {
 	using AutoMapper;
-	using MeterReadings.Data.Entities;
+	using MeterReadings.DB.Entities;
 	using MeterReadings.Dto;
 
 	public static class DtoMapperConfig

@@ -1,4 +1,4 @@
-﻿namespace MeterReadings.Data
+﻿namespace MeterReadings.DB
 {
 	using Microsoft.EntityFrameworkCore;
 	using System;

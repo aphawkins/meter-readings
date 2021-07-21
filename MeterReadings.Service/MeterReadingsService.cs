@@ -1,6 +1,6 @@
 ﻿namespace MeterReadings.Service
 {
-	using MeterReadings.Data;
+	using MeterReadings.DB;
 
 	public class MeterReadingsService : IMeterReadingsService
 	{

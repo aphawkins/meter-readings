@@ -5,7 +5,7 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using MeterReadings.Api.Controllers;
-	using MeterReadings.Data;
+	using MeterReadings.DB;
 	using MeterReadings.Dto;
 	using MeterReadings.Service;
 	using MeterReadings.TestLibrary;

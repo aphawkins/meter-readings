@@ -1,7 +1,7 @@
 ﻿namespace MeterReadings.Service
 {
-	using MeterReadings.Data;
-	using MeterReadings.Data.Entities;
+	using MeterReadings.DB;
+	using MeterReadings.DB.Entities;
 	using MeterReadings.Dto;
 
 	public class AccountRepository : RepositoryBase<AccountDto, Account>, IAccountRepository
