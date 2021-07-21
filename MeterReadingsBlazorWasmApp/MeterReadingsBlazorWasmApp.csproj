@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MeterReadingsDto\MeterReadingsDto.csproj" />
-    <ProjectReference Include="..\MeterReadingsModels\MeterReadingsModels.csproj" />
+    <ProjectReference Include="..\MeterReadings.Dto\MeterReadings.Dto.csproj" />
+    <ProjectReference Include="..\MeterReadings.Models\MeterReadings.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
