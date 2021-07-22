@@ -7,6 +7,7 @@ namespace MeterReadings.Api
 	using Microsoft.Extensions.DependencyInjection;
 	using Microsoft.Extensions.Hosting;
 	using Microsoft.OpenApi.Models;
+	using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 	public class Startup
 	{
@@ -22,6 +23,16 @@ namespace MeterReadings.Api
 		{
 			services.ConfigureSqlServerDb(Configuration.GetConnectionString("MeterReadingsDatabase"));
 			services.ConfigureMeterReadingsService();
+
+			services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options =>
+			{
+				options.Authority = "https://dev-70o00lzn.eu.auth0.com/";
+				options.Audience = "https://aph-meter-readings.com";
+			});
 
 			services.AddControllers();
 			services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "MeterReadings", Version = "v1" }));
@@ -41,6 +52,7 @@ namespace MeterReadings.Api
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints => endpoints.MapControllers());

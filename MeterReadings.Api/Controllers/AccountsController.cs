@@ -2,6 +2,7 @@
 {
 	using MeterReadings.Dto;
 	using MeterReadings.Service;
+	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Http;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Collections.Generic;
@@ -10,6 +11,7 @@
 
 	[Route("api/accounts")]
 	[ApiController]
+	// [Authorize]
 	public class AccountsController : ControllerBase
 	{
 		private readonly IMeterReadingsService _service;
