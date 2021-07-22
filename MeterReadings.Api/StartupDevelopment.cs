@@ -42,8 +42,12 @@ namespace MeterReadings.Api
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MeterReadings v1"));
 			}
 
+			app.UseHttpsRedirection();
+
 			app.UseRouting();
+
 			app.UseCors();
+
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints => endpoints.MapControllers());
